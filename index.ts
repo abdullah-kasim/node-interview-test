@@ -1,4 +1,5 @@
-class Script {
+export class Script {
+  private readonly _name: string;
   constructor(config) {
     config = { ...config };
     this._name = config.name || 'script';
@@ -11,4 +12,3 @@ class Script {
   }
 }
 
-module.exports = Script;
