@@ -5,5 +5,5 @@ cd "$DIR"
 
 
 
-docker exec -it postgres-current "PGPASSWORD=todo psql -h localhost -d postgres -c 'create database todo'"
-docker exec -it postgres-current "PGPASSWORD=todo psql -h localhost -d todo -c 'create schema todo'"
+docker exec -it postgres-current /bin/sh -c "PGPASSWORD=docker psql -h localhost -U postgres -d postgres -c 'create database todo'"
+docker exec -it postgres-current /bin/sh -c "PGPASSWORD=docker psql -h localhost -U postgres -d todo -c 'create schema todo'"
