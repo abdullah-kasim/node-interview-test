@@ -25,6 +25,6 @@
     "src/**/*",
     "index.ts",
     "test/**/*",
-    ".sequelizerc"
+    "./knexfile.ts"
   ]
 }

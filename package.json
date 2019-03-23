@@ -29,6 +29,7 @@
   "dependencies": {
     "dotenv": "^7.0.0",
     "fastify": "^2.1.0",
+    "knex": "^0.16.3",
     "pg": "^7.9.0",
     "pg-hstore": "^2.3.2",
     "reflect-metadata": "^0.1.13",
@@ -39,6 +40,7 @@
     "@commitlint/cli": "latest",
     "@commitlint/config-conventional": "latest",
     "@types/dotenv": "^6.1.0",
+    "@types/knex": "^0.16.1",
     "@types/sequelize": "^4.27.44",
     "@typescript-eslint/eslint-plugin": "^1.5.0",
     "@typescript-eslint/parser": "^1.5.0",
