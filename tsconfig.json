@@ -24,6 +24,7 @@
     "config/config.ts",
     "src/**/*",
     "index.ts",
-    "test/**/*"
+    "test/**/*",
+    "./knexfile.ts"
   ]
 }
