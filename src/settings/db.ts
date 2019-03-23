@@ -1,10 +1,4 @@
 import {Sequelize} from 'sequelize-typescript';
+import * as configs from './dbConfig'
 
-const sequelize =  new Sequelize({
-  database: 'some_db',
-  dialect: 'postgres',
-  username: 'root',
-  password: '',
-  storage: ':memory:',
-  modelPaths: [__dirname + '/models']
-});
+export const sequelize =  new Sequelize((configs as any).current);

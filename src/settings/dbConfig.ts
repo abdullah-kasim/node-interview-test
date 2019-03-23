@@ -8,7 +8,7 @@ interface DbConfig {
 
 
 const configs: DbConfig = {
-  default: {
+  current: {
     database: process.env.DB_DATABASE,
     dialect: process.env.DB_DIALECT as any,
     username: process.env.DB_USERNAME,
@@ -31,3 +31,6 @@ const configs: DbConfig = {
     }
   }
 }
+
+
+module.exports = configs
