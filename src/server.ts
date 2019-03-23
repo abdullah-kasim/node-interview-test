@@ -9,7 +9,7 @@ import './settings/env'
 const start = async () => {
   try {
     await sequelize.authenticate()
-    await fastify.listen(process.env.DB_PORT)
+    await fastify.listen(process.env.APP_PORT)
     const address = fastify.server.address() as AddressInfo
 
     fastify.log.info(`server listening on ${address.port}`)
