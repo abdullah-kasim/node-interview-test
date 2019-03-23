@@ -17,6 +17,7 @@
   "rules": {
     "indent": "off",
     "semi": "off",
+    "unicorn/filename-case": "off",
     "@typescript-eslint/indent": ["error", 2],
     "@typescript-eslint/semi": "off"
   }
