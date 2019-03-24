@@ -53,6 +53,7 @@
     "@types/knex": "^0.16.1",
     "@types/moment": "^2.13.0",
     "@types/sequelize": "^4.27.44",
+    "@types/sinon": "^7.0.10",
     "@typescript-eslint/eslint-plugin": "^1.5.0",
     "@typescript-eslint/parser": "^1.5.0",
     "ava": "latest",
@@ -80,6 +81,7 @@
     "remark-cli": "latest",
     "remark-preset-github": "latest",
     "sequelize-cli": "^5.4.0",
+    "sinon": "^7.3.0",
     "ts-node": "^8.0.3",
     "typescript": "^3.3.4000",
     "xo": "^0.24.0"
