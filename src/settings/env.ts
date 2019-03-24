@@ -12,6 +12,7 @@ interface Env {
   DB_HOST: string
   DB_PORT: string
   DB_DIALECT: string
+  APP_KEY: string
 }
 
 export const env = process.env as any as Env

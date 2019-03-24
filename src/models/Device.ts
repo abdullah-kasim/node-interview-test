@@ -1,7 +1,7 @@
 import {BelongsTo, Column, DataType, ForeignKey, Model, Table, Unique} from "sequelize-typescript";
 import {User} from "./User";
 
-enum DeviceType {
+export enum DeviceType {
   MOBILE = 'MOBILE',
   BROWSER = 'BROWSER'
 }
@@ -11,12 +11,11 @@ export class Device extends Model<Device> {
 
   @ForeignKey(() => User)
   @Column
-  user_id: string
+  user_id: number
 
   @BelongsTo(() => User)
   user: User
 
-  @Unique
   @Column
   refresh_token: string
 
