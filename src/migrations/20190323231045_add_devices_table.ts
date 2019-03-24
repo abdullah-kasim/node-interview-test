@@ -14,15 +14,18 @@ export async function up(knex: Knex): Promise<any> {
       .notNullable()
 
     t.string('refresh_token')
+      .unique()
       .notNullable()
 
     t.string('type')
       .notNullable()
 
     t.string('firebase_token')
+      .unique()
       .nullable()
 
     t.string('device_id')
+      .unique()
       .notNullable()
 
     t.unique(['user_id', 'device_id'])

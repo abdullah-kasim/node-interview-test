@@ -8,9 +8,11 @@ export async function up(knex: Knex): Promise<any> {
       .notNullable()
 
     t.string('nickname')
+      .unique()
       .notNullable()
 
     t.string('email')
+      .unique()
       .notNullable()
 
     t.string('password')
