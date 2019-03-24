@@ -3,6 +3,10 @@ import {AuthService} from "../../../src/Auth/services/AuthService";
 import sinon from 'sinon'
 import {User} from "../../../src/models/User";
 import {UserRepository} from "../../../src/repositories/UserRepository";
+import {DeviceType} from "../../../src/models/Device";
+import jwt from 'jsonwebtoken'
+import {FirebaseService} from "../../../src/services/FirebaseService";
+import {DeviceRepository} from "../../../src/repositories/DeviceRepository";
 
 test.afterEach(() => {
   sinon.restore()
@@ -59,3 +63,50 @@ test.serial('password is hashed', async (t) => {
   t.true(hashPassword.called)
   t.true(registeredUser.password === bcryptPassword)
 })
+
+
+test.serial('logins for web and return tokens and the user instance', async (t) => {
+
+  const user = sinon.createStubInstance(User)
+  user.id = 123
+  sinon.stub(UserRepository, "getUserByEmail").resolves(user as any)
+  sinon.stub(AuthService, "checkPassword").resolves(true)
+  sinon.stub(AuthService, "createJwtToken").resolves("jwtToken")
+  sinon.stub(AuthService, "createRefreshToken").resolves("refreshToken")
+  sinon.stub(DeviceRepository, "addDeviceToUser").resolves(null)
+  const firebaseValidateToken = sinon.stub(FirebaseService, "validateToken").resolves(true)
+
+  const loginDetails = await AuthService.login("nickname@example.com",
+    "123456",
+    DeviceType.BROWSER,
+    'someRandomString')
+
+  t.truthy(loginDetails.user.id)
+  t.true(!firebaseValidateToken.called)
+  t.true(loginDetails.accessToken === "jwtToken")
+  t.true(loginDetails.refreshToken === "refreshToken")
+})
+
+test.serial('logins for mobile and return tokens and the user instance', async (t) => {
+
+  const user = sinon.createStubInstance(User)
+  user.id = 123
+  sinon.stub(UserRepository, "getUserByEmail").resolves(user as any)
+  sinon.stub(AuthService, "checkPassword").resolves(true)
+  sinon.stub(AuthService, "createJwtToken").resolves("jwtToken")
+  sinon.stub(AuthService, "createRefreshToken").resolves("refreshToken")
+  sinon.stub(DeviceRepository, "addDeviceToUser").resolves(null)
+  const firebaseValidateToken = sinon.stub(FirebaseService, "validateToken").resolves(true)
+
+  const loginDetails = await AuthService.login("nickname@example.com",
+    "123456",
+    DeviceType.MOBILE,
+    'someRandomString',
+    'someFirebaseToken')
+
+  t.truthy(loginDetails.user.id)
+  t.true(firebaseValidateToken.called)
+  t.true(loginDetails.accessToken === "jwtToken")
+  t.true(loginDetails.refreshToken === "refreshToken")
+})
+

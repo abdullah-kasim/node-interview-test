@@ -14,6 +14,7 @@ import {env} from "../../settings/env";
 import firebaseAdmin from 'firebase-admin';
 import {RefreshTokenExpired} from "./exceptions/RefreshTokenExpired";
 import {InvalidFirebaseToken} from "./exceptions/InvalidFirebaseToken";
+import {FirebaseService} from "../../services/FirebaseService";
 
 
 export class AuthService {
@@ -68,7 +69,7 @@ export class AuthService {
       throw new WrongPassword()
     }
     if (type === DeviceType.MOBILE) {
-      const isValidFirebaseToken = await firebaseAdmin.auth().verifyIdToken(firebaseToken)
+      const isValidFirebaseToken = await FirebaseService.validateToken(firebaseToken)
       if (!isValidFirebaseToken) {
         throw new InvalidFirebaseToken()
       }
