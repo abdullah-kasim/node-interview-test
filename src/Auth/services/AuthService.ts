@@ -97,7 +97,7 @@ export class AuthService {
       ...userJson,
     }, env.APP_KEY, {
       expiresIn: expireAt,
-      subject: userJson.id,
+      subject: `${userJson.id}`,
       issuer: AuthService.ISSUER_TODO
     })
   }

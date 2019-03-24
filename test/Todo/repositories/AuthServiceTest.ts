@@ -7,6 +7,7 @@ import {DeviceType} from "../../../src/models/Device";
 import jwt from 'jsonwebtoken'
 import {FirebaseService} from "../../../src/services/FirebaseService";
 import {DeviceRepository} from "../../../src/repositories/DeviceRepository";
+import moment from "moment";
 
 test.afterEach(() => {
   sinon.restore()
@@ -69,8 +70,8 @@ test.serial('logins for web and return tokens and the user instance', async (t) 
 
   const user = sinon.createStubInstance(User)
   user.id = 123
+  user.password = '$2b$10$9VG.ZPYCQqEtT2Wav20oJeFFpiqnsGIHGr6unsg6VfG1kecf6XpdS'
   sinon.stub(UserRepository, "getUserByEmail").resolves(user as any)
-  sinon.stub(AuthService, "checkPassword").resolves(true)
   sinon.stub(AuthService, "createJwtToken").resolves("jwtToken")
   sinon.stub(AuthService, "createRefreshToken").resolves("refreshToken")
   sinon.stub(DeviceRepository, "addDeviceToUser").resolves(null)
@@ -91,8 +92,8 @@ test.serial('logins for mobile and return tokens and the user instance', async (
 
   const user = sinon.createStubInstance(User)
   user.id = 123
+  user.password = '$2b$10$9VG.ZPYCQqEtT2Wav20oJeFFpiqnsGIHGr6unsg6VfG1kecf6XpdS'
   sinon.stub(UserRepository, "getUserByEmail").resolves(user as any)
-  sinon.stub(AuthService, "checkPassword").resolves(true)
   sinon.stub(AuthService, "createJwtToken").resolves("jwtToken")
   sinon.stub(AuthService, "createRefreshToken").resolves("refreshToken")
   sinon.stub(DeviceRepository, "addDeviceToUser").resolves(null)
@@ -108,5 +109,20 @@ test.serial('logins for mobile and return tokens and the user instance', async (
   t.true(firebaseValidateToken.called)
   t.true(loginDetails.accessToken === "jwtToken")
   t.true(loginDetails.refreshToken === "refreshToken")
+})
+
+test.serial('creates a proper jwt token', async (t) => {
+
+  const user = sinon.createStubInstance(User)
+  user.toJSON.returns(user)
+  user.id = 123
+  user.email = 'nickname@example.com'
+  const jwtSpy = sinon.spy(jwt, 'sign')
+  const expireAt = moment().add(1, 'hour').unix()
+  const loginDetails = await AuthService.createJwtToken(user as any, expireAt)
+  const optionArgs =  jwtSpy.args[0][2] as any
+  t.truthy(optionArgs.expiresIn)
+  t.true(optionArgs.subject === "123")
+  t.truthy(optionArgs.issuer)
 })
 
