@@ -40,3 +40,16 @@ test.serial('errors out when registering existing user', async (t) => {
     return
   }
 })
+
+test.serial('password is hashed', async (t) => {
+  const user = sinon.createStubInstance(User)
+
+  // this should return null
+  sinon.stub(UserRepository, "getUserByEmail").resolves(null)
+  // this should return null too
+  sinon.stub(UserRepository, "getUserByNickname").resolves(null)
+  sinon.stub(UserRepository, "newUserInstance").returns(user as any)
+  const registeredUser = await AuthService.register("nickname", "nickname@example.com", "123456")
+
+  t.true(registeredUser.password !== "123456")
+})
