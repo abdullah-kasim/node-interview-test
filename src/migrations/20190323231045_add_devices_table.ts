@@ -35,5 +35,6 @@ export async function up(knex: Knex): Promise<any> {
 
 
 export async function down(knex: Knex): Promise<any> {
+  await knex.schema.dropTableIfExists('devices')
 }
 
