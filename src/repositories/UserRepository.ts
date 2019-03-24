@@ -21,6 +21,10 @@ export class UserRepository {
     return await User.findOne(options)
   }
 
+  static newUserInstance = () => {
+    return new User()
+  }
+
   static getUserByNickname = async (nickname: string) => {
     return await User.findOne({
       where: {

@@ -41,7 +41,7 @@ export class AuthService {
       throw errors
     }
 
-    const user = new User()
+    const user = UserRepository.newUserInstance()
     user.email = email
     user.password = await AuthService.hashPassword(password)
     user.nickname = nickname
