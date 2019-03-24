@@ -4,9 +4,11 @@ import sinon from 'sinon'
 import {User} from "../../../src/models/User";
 import {UserRepository} from "../../../src/repositories/UserRepository";
 
+test.afterEach(() => {
+  sinon.restore()
+})
 
-
-test('registers the user', async (t) => {
+test.serial('registers the user', async (t) => {
   const user = sinon.createStubInstance(User)
 
   // this should return null
@@ -21,4 +23,20 @@ test('registers the user', async (t) => {
   t.truthy(registeredUser.nickname)
   t.truthy(registeredUser.email)
   t.true(user.save.called)
+
+})
+
+
+test.serial('errors out when registering existing user', async (t) => {
+  const user = sinon.createStubInstance(User)
+
+  sinon.stub(UserRepository, "getUserByEmail").resolves(user as any)
+  sinon.stub(UserRepository, "getUserByNickname").resolves(user as any)
+  try {
+    await AuthService.register("nickname", "nickname@example.com", "123456")
+    t.fail()
+  } catch (e) {
+    t.pass()
+    return
+  }
 })
