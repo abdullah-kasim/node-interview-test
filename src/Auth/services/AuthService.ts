@@ -81,7 +81,8 @@ export class AuthService {
     await DeviceRepository.addDeviceToUser(user, type, deviceId, firebaseToken, refreshToken)
     return {
       accessToken,
-      refreshToken
+      refreshToken,
+      user
     }
   }
 
@@ -117,7 +118,8 @@ export class AuthService {
 
     return {
       accessToken,
-      refreshToken
+      refreshToken,
+      user: device.user
     }
   }
   static validateRefreshTokenExpiry = async (device: Device, refreshToken) => {
