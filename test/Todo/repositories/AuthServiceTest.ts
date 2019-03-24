@@ -49,7 +49,13 @@ test.serial('password is hashed', async (t) => {
   // this should return null too
   sinon.stub(UserRepository, "getUserByNickname").resolves(null)
   sinon.stub(UserRepository, "newUserInstance").returns(user as any)
-  const registeredUser = await AuthService.register("nickname", "nickname@example.com", "123456")
+  const bcryptPassword = '$2b$10$9VG.ZPYCQqEtT2Wav20oJeFFpiqnsGIHGr6unsg6VfG1kecf6XpdS'
 
-  t.true(registeredUser.password !== "123456")
+  const hashPassword = sinon.stub(AuthService, "hashPassword").resolves(bcryptPassword)
+
+  const inputPassword = '123456'
+
+  const registeredUser = await AuthService.register("nickname", "nickname@example.com", inputPassword)
+  t.true(hashPassword.called)
+  t.true(registeredUser.password === bcryptPassword)
 })
