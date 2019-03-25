@@ -114,7 +114,7 @@ export class AuthService {
     ])
 
     device.refresh_token = refreshToken
-    device.expire_at = DeviceRepository.getDeviceExpireAt()
+    device.expire_at = DeviceRepository.getDefaultDeviceExpireAt()
     await device.save()
 
     return {

@@ -30,12 +30,12 @@ export class DeviceRepository {
     device.firebase_token = firebaseToken
     device.refresh_token = refreshToken
     // expire in 30 days? Got it!
-    device.expire_at = DeviceRepository.getDeviceExpireAt()
+    device.expire_at = DeviceRepository.getDefaultDeviceExpireAt()
     await device.save()
     return device
   }
 
-  static getDeviceExpireAt = () => {
+  static getDefaultDeviceExpireAt = () => {
     return moment().add(30, 'days').toDate()
   }
 

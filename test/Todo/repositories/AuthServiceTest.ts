@@ -3,7 +3,7 @@ import {AuthService} from "../../../src/Auth/services/AuthService";
 import sinon from 'sinon'
 import {User} from "../../../src/models/User";
 import {UserRepository} from "../../../src/repositories/UserRepository";
-import {DeviceType} from "../../../src/models/Device";
+import {Device, DeviceType} from "../../../src/models/Device";
 import jwt from 'jsonwebtoken'
 import {FirebaseService} from "../../../src/services/FirebaseService";
 import {DeviceRepository} from "../../../src/repositories/DeviceRepository";
@@ -121,8 +121,44 @@ test.serial('creates a proper jwt token', async (t) => {
   const expireAt = moment().add(1, 'hour').unix()
   const loginDetails = await AuthService.createJwtToken(user as any, expireAt)
   const optionArgs =  jwtSpy.args[0][2] as any
-  t.truthy(optionArgs.expiresIn)
+  t.truthy(optionArgs.expiresIn === expireAt)
   t.true(optionArgs.subject === "123")
   t.truthy(optionArgs.issuer)
 })
 
+test.serial('returns access tokens when refreshed', async (t) => {
+  const device = sinon.createStubInstance(Device)
+  const currentRefreshToken = "currentRefreshToken"
+  sinon.stub(DeviceRepository, "getDeviceByRefreshToken").resolves(device as any)
+  sinon.stub(AuthService, "validateRefreshTokenExpiry").resolves(true)
+
+  const jwtTokenStub = sinon.stub(AuthService, "createJwtToken").resolves("newJwtToken")
+
+  sinon.stub(AuthService, "createRefreshToken").resolves("newRefreshToken")
+  const expireAtCall = sinon.stub(DeviceRepository, "getDefaultDeviceExpireAt").returns(new Date())
+  const jwt = await AuthService.renewRefreshToken(currentRefreshToken)
+  t.true(jwt.accessToken === "newJwtToken")
+  t.true(jwt.refreshToken === "newRefreshToken")
+  t.true(expireAtCall.called)
+  t.true(jwtTokenStub.calledWith(device.user))
+  t.deepEqual(jwt.user, device.user)
+})
+
+
+test.serial('throws error if refresh token is invalid', async (t) => {
+  const device = sinon.createStubInstance(Device)
+  const currentRefreshToken = "currentRefreshToken"
+  sinon.stub(DeviceRepository, "getDeviceByRefreshToken").resolves(device as any)
+  sinon.stub(AuthService, "validateRefreshTokenExpiry").resolves(false)
+
+
+  sinon.stub(AuthService, "createRefreshToken").resolves("newRefreshToken")
+  sinon.stub(DeviceRepository, "getDefaultDeviceExpireAt").returns(new Date())
+  try {
+    const jwt = await AuthService.renewRefreshToken(currentRefreshToken)
+    t.fail()
+  } catch (e) {
+    t.pass()
+  }
+
+})
