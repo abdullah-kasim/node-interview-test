@@ -13,6 +13,10 @@ interface Env {
   DB_PORT: string
   DB_DIALECT: string
   APP_KEY: string
+  SMTP_HOST: string
+  SMTP_PORT: string
+  SMTP_SECURE: string
+  EMAIL_ADDRESS: string
 }
 
 export const env = process.env as any as Env
