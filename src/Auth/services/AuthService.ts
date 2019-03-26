@@ -150,4 +150,5 @@ export class AuthService {
     await device.destroy()
     return true
   }
+
 }

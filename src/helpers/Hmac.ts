@@ -1,4 +1,4 @@
-import crypto, {randomBytes} from 'src/helpers/RandomHelper'
+import crypto, {randomBytes} from 'crypto'
 import {env} from "../settings/env";
 
 import {promisify} from "util";
