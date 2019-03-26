@@ -162,3 +162,27 @@ test.serial('throws error if refresh token is invalid', async (t) => {
   }
 
 })
+
+test.serial('logout the user for this particular device', async (t) => {
+  const deviceStub = sinon.createStubInstance(Device)
+  const user = sinon.createStubInstance(User)
+  const getDeviceStub = sinon.stub(DeviceRepository, "getDeviceByRefreshToken").resolves(deviceStub as any)
+  const response = await AuthService.logout(user as any, "refreshToken")
+  t.true(response)
+  t.true(getDeviceStub.calledWith(user))
+  t.true(deviceStub.destroy.called)
+})
+
+
+test.serial('logout the user for all devices', async (t) => {
+  const user = sinon.createStubInstance(User)
+  user.id = 123
+  const destroyDeviceStub = sinon.stub(Device, "destroy").resolves()
+  const response = await AuthService.logoutAll(user as any)
+  t.true(response)
+  t.true(destroyDeviceStub.calledWithExactly({
+    where: {
+      user_id: 123
+    }
+  }))
+})
