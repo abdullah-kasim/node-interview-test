@@ -9,7 +9,7 @@ import { Device } from './Device';
 import { Board } from './Board';
 import { User } from './User';
 
-enum BoardUserType {
+export enum BoardUserType {
   OWNER = 'OWNER',
   ADDED = 'ADDED'
 }
