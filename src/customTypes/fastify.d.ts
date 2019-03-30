@@ -12,10 +12,10 @@ import {
  * to IncomingMessage and ServerResponse as the doc mentioned
  */
 export interface DefaultRequestHandler<
-  Req = IncomingMessage,
-  Res = ServerResponse,
   Query = DefaultQuery,
   Params = DefaultParams,
   Headers = DefaultHeaders,
-  Body = DefaultBody
+  Body = DefaultBody,
+  Req = IncomingMessage,
+  Res = ServerResponse
 > extends RequestHandler<Req, Res, Query, Params, Headers, Body> {}

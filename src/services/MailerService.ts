@@ -1,7 +1,7 @@
 import nodemailer from 'nodemailer';
 import * as Mail from 'nodemailer/lib/mailer';
 import { env } from '../settings/env';
-import { isTrueString } from '../helpers/utils';
+import { isTrueString } from '../helpers/utilsHelper';
 
 export class MailerService {
   static getTransporter = () => {

@@ -7,7 +7,7 @@ import moment from 'moment';
 import { User } from '../../models/User';
 import { MailerService } from '../../services/MailerService';
 import { env } from '../../settings/env';
-import { Crypt } from '../../helpers/Crypt';
+import { CryptHelper } from '../../helpers/CryptHelper';
 import { UserRepository } from '../../repositories/UserRepository';
 import { EmailNotFound } from './exceptions/EmailNotFound';
 import { InvalidResetPasswordToken } from './exceptions/InvalidResetPasswordToken';
@@ -70,13 +70,13 @@ export class ResetPasswordService {
         .unix()
     };
     const text = JSON.stringify(payload);
-    return Crypt.encrypt(text);
+    return CryptHelper.encrypt(text);
   };
 
   static decryptToken = (token): Token => {
     let payload: Token = null;
     try {
-      payload = JSON.parse(Crypt.decrypt(token)) as Token;
+      payload = JSON.parse(CryptHelper.decrypt(token)) as Token;
     } catch (error) {
       throw new InvalidResetPasswordToken(error.message);
     }

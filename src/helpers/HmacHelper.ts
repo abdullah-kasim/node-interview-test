@@ -3,7 +3,7 @@ import { promisify } from 'util';
 import { env } from '../settings/env';
 import { InvalidHmac } from './exceptions/InvalidHmac';
 
-export class Hmac {
+export class HmacHelper {
   /**
    * Should this be called encrypt? But there's no encryption going on...
    * @param text
@@ -44,7 +44,7 @@ export class Hmac {
    * Should this be called decrypt? But there's no decryption going on.
    */
   static decipher = (signedText: string): object => {
-    const result = Hmac.verify(signedText, true);
+    const result = HmacHelper.verify(signedText, true);
     if (!result[0]) {
       throw new InvalidHmac();
     }

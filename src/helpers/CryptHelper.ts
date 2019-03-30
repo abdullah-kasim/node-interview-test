@@ -9,7 +9,7 @@ const IV_LENGTH = 16; // For AES, this is always 16
  * Ported to use base64 and dot for delimiter
  * Also converted it to not use deprecated methods
  */
-export class Crypt {
+export class CryptHelper {
   static encrypt = text => {
     const iv = crypto.randomBytes(IV_LENGTH);
     const cipher = crypto.createCipheriv(
