@@ -25,6 +25,7 @@
     "object-curly-spacing": "off",
     "@typescript-eslint/semi": "off",
     "@typescript-eslint/camelcase": "off",
-    "@typescript-eslint/no-extraneous-class": "off"
+    "@typescript-eslint/no-extraneous-class": "off",
+    "@typescript-eslint/member-delimiter-style": "off"
   }
 }
