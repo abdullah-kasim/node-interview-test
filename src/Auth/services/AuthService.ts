@@ -1,27 +1,24 @@
-import {Device, DeviceType} from "../../models/Device";
-import {User} from "../../models/User";
-import bcrypt from 'bcrypt'
-import {UserRepository} from "../../repositories/UserRepository";
-import {EmailAlreadyRegistered} from "./exceptions/EmailAlreadyRegistered";
-import {NicknameAlreadyRegistered} from "./exceptions/NicknameAlreadyRegistered";
-import {EmailNotFound} from "./exceptions/EmailNotFound";
-import {WrongPassword} from "./exceptions/WrongPassword";
-import {DeviceRepository} from "../../repositories/DeviceRepository";
-import {RandomHelper} from "../../helpers/RandomHelper";
-import jwt from 'jsonwebtoken'
-import moment from "moment";
-import {env} from "../../settings/env";
-import firebaseAdmin from 'firebase-admin';
-import {RefreshTokenExpired} from "./exceptions/RefreshTokenExpired";
-import {InvalidFirebaseToken} from "./exceptions/InvalidFirebaseToken";
-import {FirebaseService} from "../../services/FirebaseService";
-
+import bcrypt from "bcrypt"
+import jwt from "jsonwebtoken"
+import moment from "moment"
+import { Device, DeviceType } from "../../models/Device"
+import { User } from "../../models/User"
+import { UserRepository } from "../../repositories/UserRepository"
+import { DeviceRepository } from "../../repositories/DeviceRepository"
+import { RandomHelper } from "../../helpers/RandomHelper"
+import { env } from "../../settings/env"
+import { FirebaseService } from "../../services/FirebaseService"
+import { EmailAlreadyRegistered } from "./exceptions/EmailAlreadyRegistered"
+import { NicknameAlreadyRegistered } from "./exceptions/NicknameAlreadyRegistered"
+import { EmailNotFound } from "./exceptions/EmailNotFound"
+import { WrongPassword } from "./exceptions/WrongPassword"
+import { RefreshTokenExpired } from "./exceptions/RefreshTokenExpired"
+import { InvalidFirebaseToken } from "./exceptions/InvalidFirebaseToken"
 
 export class AuthService {
+  static readonly ISSUER_TODO = "todo"
 
-  static readonly ISSUER_TODO = 'todo'
-
-  static getAuthenticatedUser = async (req) => {
+  static getAuthenticatedUser = async req => {
     const id = req.user.sub
     return await User.findByPk(id)
   }
@@ -33,12 +30,15 @@ export class AuthService {
       errors.push(new EmailAlreadyRegistered())
     }
 
-    const existingUserByNickname = await UserRepository.getUserByNickname(nickname)
+    const existingUserByNickname = await UserRepository.getUserByNickname(
+      nickname
+    )
 
     if (existingUserByNickname) {
       errors.push(new NicknameAlreadyRegistered())
     }
-    if (errors.length) {
+
+    if (errors.length > 0) {
       throw errors
     }
 
@@ -50,7 +50,7 @@ export class AuthService {
     return user
   }
 
-  static hashPassword = async (password) => {
+  static hashPassword = async password => {
     return await bcrypt.hash(password, 10)
   }
 
@@ -59,17 +59,27 @@ export class AuthService {
     return await bcrypt.compare(passwordToCheck, hash)
   }
 
-  static login = async (email, password, type: DeviceType, deviceId, firebaseToken = null) => {
+  static login = async (
+    email,
+    password,
+    type: DeviceType,
+    deviceId,
+    firebaseToken = null
+  ) => {
     const user = await UserRepository.getUserByEmail(email)
     if (!user) {
       throw new EmailNotFound()
     }
+
     const isPasswordMatch = await AuthService.checkPassword(user, password)
     if (!isPasswordMatch) {
       throw new WrongPassword()
     }
+
     if (type === DeviceType.MOBILE) {
-      const isValidFirebaseToken = await FirebaseService.validateToken(firebaseToken)
+      const isValidFirebaseToken = await FirebaseService.validateToken(
+        firebaseToken
+      )
       if (!isValidFirebaseToken) {
         throw new InvalidFirebaseToken()
       }
@@ -79,7 +89,13 @@ export class AuthService {
       AuthService.createJwtToken(user),
       AuthService.createRefreshToken()
     ])
-    await DeviceRepository.addDeviceToUser(user, type, deviceId, firebaseToken, refreshToken)
+    await DeviceRepository.addDeviceToUser(
+      user,
+      type,
+      deviceId,
+      firebaseToken,
+      refreshToken
+    )
     return {
       accessToken,
       refreshToken,
@@ -89,25 +105,38 @@ export class AuthService {
 
   static createJwtToken = async (user: User, expireAt: number = null) => {
     if (!expireAt) {
-      expireAt = moment().add(1, 'hour').unix()
+      expireAt = moment()
+        .add(1, "hour")
+        .unix()
     }
+
     const userJson = user.toJSON() as any
     userJson.password = null
-    return await jwt.sign({
-      ...userJson,
-    }, env.APP_KEY, {
-      expiresIn: expireAt,
-      subject: `${userJson.id}`,
-      issuer: AuthService.ISSUER_TODO
-    })
+    return await jwt.sign(
+      {
+        ...userJson
+      },
+      env.APP_KEY,
+      {
+        expiresIn: expireAt,
+        subject: `${userJson.id}`,
+        issuer: AuthService.ISSUER_TODO
+      }
+    )
   }
 
-  static renewRefreshToken = async (currentRefreshToken) => {
-    const device = await DeviceRepository.getDeviceByRefreshToken(currentRefreshToken)
-    const isRefreshTokenValid = await AuthService.validateRefreshTokenExpiry(device, currentRefreshToken)
+  static renewRefreshToken = async currentRefreshToken => {
+    const device = await DeviceRepository.getDeviceByRefreshToken(
+      currentRefreshToken
+    )
+    const isRefreshTokenValid = await AuthService.validateRefreshTokenExpiry(
+      device,
+      currentRefreshToken
+    )
     if (!isRefreshTokenValid) {
       throw new RefreshTokenExpired()
     }
+
     const [accessToken, refreshToken] = await Promise.all([
       AuthService.createJwtToken(device.user),
       AuthService.createRefreshToken()
@@ -123,13 +152,15 @@ export class AuthService {
       user: device.user
     }
   }
+
   static validateRefreshTokenExpiry = async (device: Device, refreshToken) => {
     if (!device) {
       return false
     }
+
     const now = moment()
     const expireAt = moment(device.expire_at)
-    return !(now.isAfter(expireAt) || refreshToken !== device.refresh_token);
+    return !(now.isAfter(expireAt) || refreshToken !== device.refresh_token)
   }
 
   static createRefreshToken = async () => {
@@ -150,5 +181,4 @@ export class AuthService {
     await device.destroy()
     return true
   }
-
 }
