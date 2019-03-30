@@ -1,6 +1,7 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import moment from 'moment';
+import * as admin from 'firebase-admin';
 import { Device, DeviceType } from '../../models/Device';
 import { User } from '../../models/User';
 import { UserRepository } from '../../repositories/UserRepository';
@@ -8,6 +9,7 @@ import { DeviceRepository } from '../../repositories/DeviceRepository';
 import { RandomHelper } from '../../helpers/RandomHelper';
 import { env } from '../../settings/env';
 import { FirebaseService } from '../../services/FirebaseService';
+import { AuthHeader } from '../constants/AuthHeader';
 import { EmailAlreadyRegistered } from './exceptions/EmailAlreadyRegistered';
 import { NicknameAlreadyRegistered } from './exceptions/NicknameAlreadyRegistered';
 import { EmailNotFound } from './exceptions/EmailNotFound';
@@ -17,11 +19,6 @@ import { InvalidFirebaseToken } from './exceptions/InvalidFirebaseToken';
 
 export class AuthService {
   static readonly ISSUER_TODO = 'todo';
-
-  static getAuthenticatedUser = async req => {
-    const id = req.user.sub;
-    return await User.findByPk(id);
-  };
 
   static register = async (nickname, email, password) => {
     const errors = [];
@@ -85,17 +82,17 @@ export class AuthService {
       }
     }
 
-    const [accessToken, refreshToken] = await Promise.all([
-      AuthService.createJwtToken(user),
+    const [refreshToken] = await Promise.all([
       AuthService.createRefreshToken()
     ]);
-    await DeviceRepository.addDeviceToUser(
+    const device = await DeviceRepository.addDeviceToUser(
       user,
       type,
       deviceId,
       firebaseToken,
       refreshToken
     );
+    const accessToken = await AuthService.createJwtToken(user, device);
     return {
       accessToken,
       refreshToken,
@@ -103,23 +100,33 @@ export class AuthService {
     };
   };
 
-  static createJwtToken = async (user: User, expireAt: number = null) => {
+  static cleanDevice = (device: Device) => {
+    return {
+      id: device.id
+    };
+  };
+
+  static createJwtToken = async (
+    user: User,
+    device: Device,
+    expireAt: number = null
+  ) => {
     if (!expireAt) {
       expireAt = moment()
         .add(1, 'hour')
         .unix();
     }
 
-    const userJson = user.toJSON() as any;
-    userJson.password = null;
+    const expiresIn = expireAt - moment().unix();
+
     return await jwt.sign(
       {
-        ...userJson
+        device: AuthService.cleanDevice(device)
       },
       env.APP_KEY,
       {
-        expiresIn: expireAt,
-        subject: `${userJson.id}`,
+        expiresIn,
+        subject: `${user.id}`,
         issuer: AuthService.ISSUER_TODO
       }
     );
@@ -130,16 +137,32 @@ export class AuthService {
   };
 
   static getUserFromRequest = async req => {
-    const authorizationHeader = req.headers['Frontend-Token'] as string;
+    const authorizationHeader = req.headers[
+      AuthHeader.FRONTEND_TOKEN
+    ] as string;
     if (!authorizationHeader) {
       return null;
     }
     try {
       const jwt = AuthService.verifyAndGetJwtToken(authorizationHeader) as any;
-      return await User.findByPk(jwt.sub);
+      return await User.findByPk(jwt.sub, {
+        include: [
+          {
+            model: Device,
+            where: {
+              id: jwt.device.id
+            }
+          }
+        ]
+      });
     } catch (e) {
       return null;
     }
+  };
+
+  static cleanUser = (user: User) => {
+    const { password: _p, ...userWithoutSensitive } = user.toJSON() as any;
+    return userWithoutSensitive;
   };
 
   static renewRefreshToken = async currentRefreshToken => {
@@ -154,15 +177,14 @@ export class AuthService {
       throw new RefreshTokenExpired();
     }
 
-    const [accessToken, refreshToken] = await Promise.all([
-      AuthService.createJwtToken(device.user),
+    const [refreshToken] = await Promise.all([
       AuthService.createRefreshToken()
     ]);
 
     device.refresh_token = refreshToken;
     device.expire_at = DeviceRepository.getDefaultDeviceExpireAt();
     await device.save();
-
+    const accessToken = await AuthService.createJwtToken(device.user, device);
     return {
       accessToken,
       refreshToken,
@@ -193,8 +215,12 @@ export class AuthService {
     return true;
   };
 
-  static logout = async (user: User, refreshToken: string) => {
+  static getUserByRefreshToken = async (refreshToken: string) => {
     const device = await DeviceRepository.getDeviceByRefreshToken(refreshToken);
+    return device.user;
+  };
+
+  static logout = async (user: User, device: Device) => {
     await device.destroy();
     return true;
   };

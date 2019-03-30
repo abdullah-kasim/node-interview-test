@@ -1,6 +1,5 @@
+import path from 'path';
 import dotenv from 'dotenv';
-
-dotenv.config();
 
 interface Env {
   APP_KEY: string;
@@ -21,4 +20,6 @@ interface Env {
   SMTP_SECURE: string;
 }
 
-export const env = (process.env as any) as Env;
+export const env = (dotenv.config({
+  path: path.resolve(__dirname, '../../.env')
+}).parsed as any) as Env;

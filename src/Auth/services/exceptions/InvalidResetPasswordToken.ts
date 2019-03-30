@@ -1,5 +1,5 @@
 export class InvalidResetPasswordToken extends Error {
-  constructor(message = 'The firebase token is invalid') {
+  constructor(message = 'The reset password token is invalid') {
     super(message);
   }
 }

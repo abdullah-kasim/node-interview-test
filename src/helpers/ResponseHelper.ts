@@ -5,6 +5,7 @@ import { DefaultRequestHandler } from '../customTypes/fastify';
 export class ResponseHelper {
   static getBase = (
     request: FastifyRequest<IncomingMessage>,
+    reply: FastifyReply<ServerResponse>,
     data = null,
     errors = null,
     meta = null
@@ -12,16 +13,20 @@ export class ResponseHelper {
     const payload: any = {
       data,
       errors,
-      meta: meta || ResponseHelper.getMeta(request)
+      meta: meta || ResponseHelper.getMeta(request, reply)
     };
     return payload;
   };
 
-  static getMeta = (request: FastifyRequest<IncomingMessage>) => {
+  static getMeta = (
+    request: FastifyRequest<IncomingMessage>,
+    reply: FastifyReply<ServerResponse>
+  ) => {
     return {
       url: request.req.url,
+      statusCode: reply.res.statusCode,
       hostname: request.hostname,
-      requestedAt: new Date()
+      timestamp: new Date()
     };
   };
 
@@ -31,7 +36,16 @@ export class ResponseHelper {
     errors
   ) => {
     reply.code(422);
-    return ResponseHelper.getBase(request, null, errors);
+    return ResponseHelper.getBase(request, reply, null, errors);
+  };
+
+  static create = (
+    request: FastifyRequest<IncomingMessage>,
+    reply: FastifyReply<ServerResponse>,
+    data: any
+  ) => {
+    reply.code(200);
+    return ResponseHelper.getBase(request, reply, data);
   };
 
   static ok = (
@@ -39,6 +53,6 @@ export class ResponseHelper {
     reply: FastifyReply<ServerResponse>
   ) => {
     reply.code(200);
-    return ResponseHelper.getBase(request);
+    return ResponseHelper.getBase(request, reply);
   };
 }

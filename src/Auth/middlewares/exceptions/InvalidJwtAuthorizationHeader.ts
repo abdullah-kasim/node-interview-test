@@ -1,5 +1,5 @@
 export class InvalidJwtAuthorizationHeader extends Error {
-  constructor(message = 'A user with this e-mail is not found') {
+  constructor(message = 'Invalid jwt authorization header') {
     super(message);
   }
 }

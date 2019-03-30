@@ -8,13 +8,9 @@ import {
   RequestHandler
 } from 'fastify';
 import { DefaultRequestHandler } from '../../customTypes/fastify';
-import { InvalidJwtAuthorizationHeader } from './exceptions/InvalidJwtAuthorizationHeader';
 import { AuthService } from '../services/AuthService';
-
-// we'll move this out to a separate file some day
-enum CustomHeaders {
-  FrontendToken = 'Frontend-Token'
-}
+import { AuthHeader } from '../constants/AuthHeader';
+import { InvalidJwtAuthorizationHeader } from './exceptions/InvalidJwtAuthorizationHeader';
 
 export class AuthMiddleware {
   /**
@@ -28,7 +24,7 @@ export class AuthMiddleware {
   static isJwtTokenValid: DefaultRequestHandler = async (request, reply) => {
     // it's a custom header, so there's no need to cater for Bearer
     const authorizationHeader = request.headers[
-      CustomHeaders.FrontendToken
+      AuthHeader.FRONTEND_TOKEN
     ] as string;
     if (!authorizationHeader) {
       throw new InvalidJwtAuthorizationHeader();
