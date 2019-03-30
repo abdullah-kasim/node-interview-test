@@ -1,63 +1,63 @@
-import bcrypt from "bcrypt"
-import jwt from "jsonwebtoken"
-import moment from "moment"
-import { Device, DeviceType } from "../../models/Device"
-import { User } from "../../models/User"
-import { UserRepository } from "../../repositories/UserRepository"
-import { DeviceRepository } from "../../repositories/DeviceRepository"
-import { RandomHelper } from "../../helpers/RandomHelper"
-import { env } from "../../settings/env"
-import { FirebaseService } from "../../services/FirebaseService"
-import { EmailAlreadyRegistered } from "./exceptions/EmailAlreadyRegistered"
-import { NicknameAlreadyRegistered } from "./exceptions/NicknameAlreadyRegistered"
-import { EmailNotFound } from "./exceptions/EmailNotFound"
-import { WrongPassword } from "./exceptions/WrongPassword"
-import { RefreshTokenExpired } from "./exceptions/RefreshTokenExpired"
-import { InvalidFirebaseToken } from "./exceptions/InvalidFirebaseToken"
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import moment from 'moment';
+import { Device, DeviceType } from '../../models/Device';
+import { User } from '../../models/User';
+import { UserRepository } from '../../repositories/UserRepository';
+import { DeviceRepository } from '../../repositories/DeviceRepository';
+import { RandomHelper } from '../../helpers/RandomHelper';
+import { env } from '../../settings/env';
+import { FirebaseService } from '../../services/FirebaseService';
+import { EmailAlreadyRegistered } from './exceptions/EmailAlreadyRegistered';
+import { NicknameAlreadyRegistered } from './exceptions/NicknameAlreadyRegistered';
+import { EmailNotFound } from './exceptions/EmailNotFound';
+import { WrongPassword } from './exceptions/WrongPassword';
+import { RefreshTokenExpired } from './exceptions/RefreshTokenExpired';
+import { InvalidFirebaseToken } from './exceptions/InvalidFirebaseToken';
 
 export class AuthService {
-  static readonly ISSUER_TODO = "todo"
+  static readonly ISSUER_TODO = 'todo';
 
   static getAuthenticatedUser = async req => {
-    const id = req.user.sub
-    return await User.findByPk(id)
-  }
+    const id = req.user.sub;
+    return await User.findByPk(id);
+  };
 
   static register = async (nickname, email, password) => {
-    const errors = []
-    const existingUserByEmail = await UserRepository.getUserByEmail(email)
+    const errors = [];
+    const existingUserByEmail = await UserRepository.getUserByEmail(email);
     if (existingUserByEmail) {
-      errors.push(new EmailAlreadyRegistered())
+      errors.push(new EmailAlreadyRegistered());
     }
 
     const existingUserByNickname = await UserRepository.getUserByNickname(
       nickname
-    )
+    );
 
     if (existingUserByNickname) {
-      errors.push(new NicknameAlreadyRegistered())
+      errors.push(new NicknameAlreadyRegistered());
     }
 
     if (errors.length > 0) {
-      throw errors
+      throw errors;
     }
 
-    const user = UserRepository.newUserInstance()
-    user.email = email
-    user.password = await AuthService.hashPassword(password)
-    user.nickname = nickname
-    await user.save()
-    return user
-  }
+    const user = UserRepository.newUserInstance();
+    user.email = email;
+    user.password = await AuthService.hashPassword(password);
+    user.nickname = nickname;
+    await user.save();
+    return user;
+  };
 
   static hashPassword = async password => {
-    return await bcrypt.hash(password, 10)
-  }
+    return await bcrypt.hash(password, 10);
+  };
 
   static checkPassword = async (user: User, passwordToCheck) => {
-    const hash = user.password
-    return await bcrypt.compare(passwordToCheck, hash)
-  }
+    const hash = user.password;
+    return await bcrypt.compare(passwordToCheck, hash);
+  };
 
   static login = async (
     email,
@@ -66,52 +66,52 @@ export class AuthService {
     deviceId,
     firebaseToken = null
   ) => {
-    const user = await UserRepository.getUserByEmail(email)
+    const user = await UserRepository.getUserByEmail(email);
     if (!user) {
-      throw new EmailNotFound()
+      throw new EmailNotFound();
     }
 
-    const isPasswordMatch = await AuthService.checkPassword(user, password)
+    const isPasswordMatch = await AuthService.checkPassword(user, password);
     if (!isPasswordMatch) {
-      throw new WrongPassword()
+      throw new WrongPassword();
     }
 
     if (type === DeviceType.MOBILE) {
       const isValidFirebaseToken = await FirebaseService.validateToken(
         firebaseToken
-      )
+      );
       if (!isValidFirebaseToken) {
-        throw new InvalidFirebaseToken()
+        throw new InvalidFirebaseToken();
       }
     }
 
     const [accessToken, refreshToken] = await Promise.all([
       AuthService.createJwtToken(user),
       AuthService.createRefreshToken()
-    ])
+    ]);
     await DeviceRepository.addDeviceToUser(
       user,
       type,
       deviceId,
       firebaseToken,
       refreshToken
-    )
+    );
     return {
       accessToken,
       refreshToken,
       user
-    }
-  }
+    };
+  };
 
   static createJwtToken = async (user: User, expireAt: number = null) => {
     if (!expireAt) {
       expireAt = moment()
-        .add(1, "hour")
-        .unix()
+        .add(1, 'hour')
+        .unix();
     }
 
-    const userJson = user.toJSON() as any
-    userJson.password = null
+    const userJson = user.toJSON() as any;
+    userJson.password = null;
     return await jwt.sign(
       {
         ...userJson
@@ -122,63 +122,80 @@ export class AuthService {
         subject: `${userJson.id}`,
         issuer: AuthService.ISSUER_TODO
       }
-    )
-  }
+    );
+  };
+
+  static verifyAndGetJwtToken = token => {
+    return jwt.verify(token, env.APP_KEY);
+  };
+
+  static getUserFromRequest = async req => {
+    const authorizationHeader = req.headers['Frontend-Token'] as string;
+    if (!authorizationHeader) {
+      return null;
+    }
+    try {
+      const jwt = AuthService.verifyAndGetJwtToken(authorizationHeader) as any;
+      return await User.findByPk(jwt.sub);
+    } catch (e) {
+      return null;
+    }
+  };
 
   static renewRefreshToken = async currentRefreshToken => {
     const device = await DeviceRepository.getDeviceByRefreshToken(
       currentRefreshToken
-    )
+    );
     const isRefreshTokenValid = await AuthService.validateRefreshTokenExpiry(
       device,
       currentRefreshToken
-    )
+    );
     if (!isRefreshTokenValid) {
-      throw new RefreshTokenExpired()
+      throw new RefreshTokenExpired();
     }
 
     const [accessToken, refreshToken] = await Promise.all([
       AuthService.createJwtToken(device.user),
       AuthService.createRefreshToken()
-    ])
+    ]);
 
-    device.refresh_token = refreshToken
-    device.expire_at = DeviceRepository.getDefaultDeviceExpireAt()
-    await device.save()
+    device.refresh_token = refreshToken;
+    device.expire_at = DeviceRepository.getDefaultDeviceExpireAt();
+    await device.save();
 
     return {
       accessToken,
       refreshToken,
       user: device.user
-    }
-  }
+    };
+  };
 
   static validateRefreshTokenExpiry = async (device: Device, refreshToken) => {
     if (!device) {
-      return false
+      return false;
     }
 
-    const now = moment()
-    const expireAt = moment(device.expire_at)
-    return !(now.isAfter(expireAt) || refreshToken !== device.refresh_token)
-  }
+    const now = moment();
+    const expireAt = moment(device.expire_at);
+    return !(now.isAfter(expireAt) || refreshToken !== device.refresh_token);
+  };
 
   static createRefreshToken = async () => {
-    return await RandomHelper.randomString(50)
-  }
+    return await RandomHelper.randomString(50);
+  };
 
   static logoutAll = async (user: User) => {
     await Device.destroy({
       where: {
         user_id: user.id
       }
-    })
-    return true
-  }
+    });
+    return true;
+  };
 
   static logout = async (user: User, refreshToken: string) => {
-    const device = await DeviceRepository.getDeviceByRefreshToken(refreshToken)
-    await device.destroy()
-    return true
-  }
+    const device = await DeviceRepository.getDeviceByRefreshToken(refreshToken);
+    await device.destroy();
+    return true;
+  };
 }

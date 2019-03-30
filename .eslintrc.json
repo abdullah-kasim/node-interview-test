@@ -18,7 +18,10 @@
   "rules": {
     "indent": "off",
     "semi": "off",
+    "new-cap": "off",
     "max-params": "off",
+    "import/no-unresolved": "off",
+    "unicorn/catch-error-name": "off",
     "no-return-await": "off",
     "unicorn/filename-case": "off",
     "@typescript-eslint/indent": ["error", 2],
