@@ -14,7 +14,13 @@ export async function up(knex: Knex): Promise<any> {
       .unique()
       .notNullable();
 
-    t.string('password').notNullable();
+    t.string('password')
+      .defaultTo(null)
+      .nullable();
+
+    t.boolean('is_firebase_account')
+      .defaultTo(false)
+      .notNullable();
 
     t.timestamps(false, true);
   });

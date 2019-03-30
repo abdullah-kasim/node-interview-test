@@ -85,9 +85,6 @@ test.serial(
     sinon.stub(AuthService, 'createJwtToken').resolves('jwtToken');
     sinon.stub(AuthService, 'createRefreshToken').resolves('refreshToken');
     sinon.stub(DeviceRepository, 'addDeviceToUser').resolves(null);
-    const firebaseValidateToken = sinon
-      .stub(FirebaseService, 'validateToken')
-      .resolves(true);
 
     const loginDetails = await AuthService.login(
       'nickname@example.com',
@@ -97,7 +94,6 @@ test.serial(
     );
 
     t.truthy(loginDetails.user.id);
-    t.true(!firebaseValidateToken.called);
     t.true(loginDetails.accessToken === 'jwtToken');
     t.true(loginDetails.refreshToken === 'refreshToken');
   }
@@ -114,9 +110,6 @@ test.serial(
     sinon.stub(AuthService, 'createJwtToken').resolves('jwtToken');
     sinon.stub(AuthService, 'createRefreshToken').resolves('refreshToken');
     sinon.stub(DeviceRepository, 'addDeviceToUser').resolves(null);
-    const firebaseValidateToken = sinon
-      .stub(FirebaseService, 'validateToken')
-      .resolves(true);
 
     const loginDetails = await AuthService.login(
       'nickname@example.com',
@@ -127,7 +120,6 @@ test.serial(
     );
 
     t.truthy(loginDetails.user.id);
-    t.true(firebaseValidateToken.called);
     t.true(loginDetails.accessToken === 'jwtToken');
     t.true(loginDetails.refreshToken === 'refreshToken');
   }

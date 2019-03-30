@@ -3,6 +3,7 @@ import fastifyBase from 'fastify';
 import { sequelize } from './settings/db';
 import { fastify } from './settings/http';
 import { env } from './settings/env';
+import './settings/firebase';
 
 if (!env.APP_KEY) {
   throw new Error('App key is not defined!');

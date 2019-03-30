@@ -18,7 +18,7 @@ export async function up(knex: Knex): Promise<any> {
 
     t.string('type').notNullable();
 
-    t.string('firebase_token')
+    t.string('firebase_cloud_token')
       .unique()
       .nullable();
 

@@ -20,6 +20,36 @@ import { InvalidFirebaseToken } from './exceptions/InvalidFirebaseToken';
 export class AuthService {
   static readonly ISSUER_TODO = 'todo';
 
+  static registerUsingFirebase = async (nickname, firebaseToken) => {
+    const errors = [];
+    const firebaseUser = await FirebaseService.getUser(firebaseToken);
+    const existingUserByEmail = await UserRepository.getUserByEmail(
+      firebaseUser.email
+    );
+    if (existingUserByEmail) {
+      errors.push(new EmailAlreadyRegistered());
+    }
+
+    const existingUserByNickname = await UserRepository.getUserByNickname(
+      nickname
+    );
+
+    if (existingUserByNickname) {
+      errors.push(new NicknameAlreadyRegistered());
+    }
+
+    if (errors.length > 0) {
+      throw errors;
+    }
+
+    const user = UserRepository.newUserInstance();
+    user.email = firebaseUser.email;
+    user.password = null;
+    user.nickname = nickname;
+    await user.save();
+    return user;
+  };
+
   static register = async (nickname, email, password) => {
     const errors = [];
     const existingUserByEmail = await UserRepository.getUserByEmail(email);
@@ -56,12 +86,47 @@ export class AuthService {
     return await bcrypt.compare(passwordToCheck, hash);
   };
 
+  static loginUsingFirebase = async (
+    firebaseToken,
+    type: DeviceType,
+    deviceId,
+    firebaseCloudToken = null
+  ) => {
+    const firebaseUser = await FirebaseService.getUser(firebaseToken);
+    if (!firebaseUser) {
+      throw new InvalidFirebaseToken();
+    }
+    const user = await UserRepository.getUserByEmail(firebaseUser.email);
+    if (!user) {
+      throw new EmailNotFound();
+    }
+
+    const [refreshToken] = await Promise.all([
+      AuthService.createRefreshToken()
+    ]);
+
+    const device = await DeviceRepository.addDeviceToUser(
+      user,
+      type,
+      deviceId,
+      firebaseCloudToken,
+      refreshToken
+    );
+
+    const accessToken = await AuthService.createJwtToken(user, device);
+    return {
+      accessToken,
+      refreshToken,
+      user
+    };
+  };
+
   static login = async (
     email,
     password,
     type: DeviceType,
     deviceId,
-    firebaseToken = null
+    firebaseCloudToken = null
   ) => {
     const user = await UserRepository.getUserByEmail(email);
     if (!user) {
@@ -73,15 +138,6 @@ export class AuthService {
       throw new WrongPassword();
     }
 
-    if (type === DeviceType.MOBILE) {
-      const isValidFirebaseToken = await FirebaseService.validateToken(
-        firebaseToken
-      );
-      if (!isValidFirebaseToken) {
-        throw new InvalidFirebaseToken();
-      }
-    }
-
     const [refreshToken] = await Promise.all([
       AuthService.createRefreshToken()
     ]);
@@ -89,7 +145,7 @@ export class AuthService {
       user,
       type,
       deviceId,
-      firebaseToken,
+      firebaseCloudToken,
       refreshToken
     );
     const accessToken = await AuthService.createJwtToken(user, device);

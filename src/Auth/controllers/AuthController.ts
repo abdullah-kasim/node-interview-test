@@ -16,7 +16,7 @@ interface LoginBody {
   password: string;
   type: DeviceType;
   deviceId: string;
-  firebaseToken?: string;
+  firebaseCloudToken?: string;
 }
 
 interface LogoutBody {
@@ -28,6 +28,70 @@ interface RefreshBody {
 }
 
 export class AuthController {
+  static registerUsingFirebase: DefaultRequestHandler<
+    any,
+    any,
+    any,
+    any
+  > = async (request, reply) => {
+    const schema = Joi.object().keys({
+      nickname: Joi.string().required(),
+      firebaseToken: Joi.string().required()
+    });
+    const validation = Joi.validate(request.body, schema, {
+      abortEarly: false
+    });
+    if (validation.error !== null) {
+      return ResponseHelper.validationError(request, reply, validation.error);
+    }
+    const { nickname, firebaseToken } = request.body;
+    try {
+      await AuthService.registerUsingFirebase(nickname, firebaseToken);
+      return ResponseHelper.ok(request, reply);
+    } catch (e) {
+      return ResponseHelper.validationError(request, reply, e);
+    }
+  };
+
+  static loginUsingFirebase: DefaultRequestHandler<any, any, any, any> = async (
+    request,
+    reply
+  ) => {
+    const schema = Joi.object().keys({
+      deviceId: Joi.string().required(),
+      type: Joi.string().required(),
+      firebaseToken: Joi.string().optional(),
+      firebaseCloudToken: Joi.string().required()
+    });
+    const validation = Joi.validate(request.body, schema, {
+      abortEarly: false
+    });
+    if (validation.error !== null) {
+      return ResponseHelper.validationError(request, reply, validation.error);
+    }
+
+    const {
+      deviceId,
+      firebaseToken = null,
+      firebaseCloudToken,
+      type
+    } = request.body;
+    try {
+      const tokenDetails = await AuthService.loginUsingFirebase(
+        firebaseToken,
+        type,
+        deviceId,
+        firebaseCloudToken
+      );
+      return ResponseHelper.create(request, reply, {
+        ...tokenDetails,
+        user: AuthService.cleanUser(tokenDetails.user)
+      });
+    } catch (e) {
+      return ResponseHelper.validationError(request, reply, e);
+    }
+  };
+
   static register: DefaultRequestHandler<any, any, any, RegisterBody> = async (
     request,
     reply
@@ -64,7 +128,7 @@ export class AuthController {
       password: Joi.string().required(),
       deviceId: Joi.string().required(),
       type: Joi.string().required(),
-      firebaseToken: Joi.string().optional()
+      firebaseCloudToken: Joi.string().optional()
     });
     const validation = Joi.validate(request.body, schema, {
       abortEarly: false
@@ -77,7 +141,7 @@ export class AuthController {
       email,
       password,
       deviceId,
-      firebaseToken = null,
+      firebaseCloudToken = null,
       type
     } = request.body;
     try {
@@ -86,7 +150,7 @@ export class AuthController {
         password,
         type,
         deviceId,
-        firebaseToken
+        firebaseCloudToken
       );
       return ResponseHelper.create(request, reply, {
         ...tokenDetails,
