@@ -44,12 +44,14 @@
     "reflect-metadata": "^0.1.13",
     "sequelize": "^5.1.0",
     "sequelize-typescript": "^1.0.0-alpha.9",
-    "serialize-javascript": "^1.6.1"
+    "serialize-javascript": "^1.6.1",
+    "uuid": "^3.3.2"
   },
   "devDependencies": {
     "@commitlint/cli": "latest",
     "@commitlint/config-conventional": "latest",
     "@types/bcrypt": "^3.0.0",
+    "@types/bluebird": "^3.5.26",
     "@types/cors": "^2.8.4",
     "@types/dotenv": "^6.1.0",
     "@types/express-jwt": "^0.0.42",
@@ -62,6 +64,7 @@
     "@types/sequelize": "^4.27.44",
     "@types/serialize-javascript": "^1.5.0",
     "@types/sinon": "^7.0.10",
+    "@types/uuid": "^3.4.4",
     "@typescript-eslint/eslint-plugin": "^1.5.0",
     "@typescript-eslint/parser": "^1.5.0",
     "ava": "latest",
