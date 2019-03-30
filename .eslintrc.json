@@ -12,13 +12,17 @@
     "xo/esnext",
     "xo-lass",
     "xo-typescript",
-    "./node_modules/xo/config/plugins.js"
+    "./node_modules/xo/config/plugins.js",
+    "prettier"
   ],
   "rules": {
     "indent": "off",
     "semi": "off",
+    "no-return-await": "off",
     "unicorn/filename-case": "off",
     "@typescript-eslint/indent": ["error", 2],
-    "@typescript-eslint/semi": "off"
+    "object-curly-spacing": "off",
+    "@typescript-eslint/semi": "off",
+    "@typescript-eslint/no-extraneous-class": "off"
   }
 }
