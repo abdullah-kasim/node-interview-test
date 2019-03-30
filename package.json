@@ -172,6 +172,7 @@
   "xo": {
     "prettier": true,
     "space": true,
+    "semi": false,
     "semicolon": false,
     "extends": [
       "xo-lass",
