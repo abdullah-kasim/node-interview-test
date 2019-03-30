@@ -1,7 +1,6 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import moment from 'moment';
-import * as admin from 'firebase-admin';
 import { Device, DeviceType } from '../../models/Device';
 import { User } from '../../models/User';
 import { UserRepository } from '../../repositories/UserRepository';
@@ -16,6 +15,7 @@ import { EmailNotFound } from './exceptions/EmailNotFound';
 import { WrongPassword } from './exceptions/WrongPassword';
 import { RefreshTokenExpired } from './exceptions/RefreshTokenExpired';
 import { InvalidFirebaseToken } from './exceptions/InvalidFirebaseToken';
+import { InvalidFirebaseCloudToken } from './exceptions/InvalidFirebaseCloudToken';
 
 export class AuthService {
   static readonly ISSUER_TODO = 'todo';
@@ -46,6 +46,7 @@ export class AuthService {
     user.email = firebaseUser.email;
     user.password = null;
     user.nickname = nickname;
+    user.is_firebase_account = true;
     await user.save();
     return user;
   };
@@ -101,6 +102,12 @@ export class AuthService {
       throw new EmailNotFound();
     }
 
+    if (type === DeviceType.MOBILE) {
+      if (!firebaseCloudToken) {
+        throw new InvalidFirebaseCloudToken();
+      }
+    }
+
     const [refreshToken] = await Promise.all([
       AuthService.createRefreshToken()
     ]);
@@ -136,6 +143,12 @@ export class AuthService {
     const isPasswordMatch = await AuthService.checkPassword(user, password);
     if (!isPasswordMatch) {
       throw new WrongPassword();
+    }
+
+    if (type === DeviceType.MOBILE) {
+      if (!firebaseCloudToken) {
+        throw new InvalidFirebaseCloudToken();
+      }
     }
 
     const [refreshToken] = await Promise.all([

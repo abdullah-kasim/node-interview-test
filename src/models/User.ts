@@ -3,6 +3,7 @@ import {
   Column,
   HasMany,
   Model,
+  Sequelize,
   Table
 } from 'sequelize-typescript';
 import { Device } from './Device';
@@ -19,6 +20,9 @@ export class User extends Model<User> {
 
   @Column
   password: string;
+
+  @Column
+  is_firebase_account: boolean;
 
   @HasMany(() => Device)
   devices: Device[];

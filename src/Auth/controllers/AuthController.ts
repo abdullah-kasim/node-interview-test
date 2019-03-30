@@ -60,8 +60,8 @@ export class AuthController {
     const schema = Joi.object().keys({
       deviceId: Joi.string().required(),
       type: Joi.string().required(),
-      firebaseToken: Joi.string().optional(),
-      firebaseCloudToken: Joi.string().required()
+      firebaseToken: Joi.string().required(),
+      firebaseCloudToken: Joi.string().optional()
     });
     const validation = Joi.validate(request.body, schema, {
       abortEarly: false
