@@ -3,6 +3,7 @@ import { DefaultRequestHandler } from '../../customTypes/fastify';
 import { ResponseHelper } from '../../helpers/ResponseHelper';
 import { AuthService } from '../services/AuthService';
 import { DeviceType } from '../../models/Device';
+import { passwordValidation } from '../../settings/validate';
 
 interface RegisterBody {
   password: string;
@@ -32,9 +33,7 @@ export class AuthController {
     reply
   ) => {
     const schema = Joi.object().keys({
-      password: Joi.string()
-        .min(6)
-        .required(),
+      password: passwordValidation.required(),
       email: Joi.string()
         .min(6)
         .email()

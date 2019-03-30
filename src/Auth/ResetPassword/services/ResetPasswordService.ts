@@ -4,14 +4,14 @@ import * as util from 'util';
 import querystring from 'querystring';
 import * as _ from 'lodash';
 import moment from 'moment';
-import { User } from '../../models/User';
-import { MailerService } from '../../services/MailerService';
-import { env } from '../../settings/env';
-import { CryptHelper } from '../../helpers/CryptHelper';
-import { UserRepository } from '../../repositories/UserRepository';
-import { EmailNotFound } from './exceptions/EmailNotFound';
+import { User } from '../../../models/User';
+import { MailerService } from '../../../services/MailerService';
+import { env } from '../../../settings/env';
+import { CryptHelper } from '../../../helpers/CryptHelper';
+import { UserRepository } from '../../../repositories/UserRepository';
+import { EmailNotFound } from '../../services/exceptions/EmailNotFound';
+import { AuthService } from '../../services/AuthService';
 import { InvalidResetPasswordToken } from './exceptions/InvalidResetPasswordToken';
-import { AuthService } from './AuthService';
 
 // Move this to another class
 enum TokenType {
@@ -41,10 +41,10 @@ export class ResetPasswordService {
     }
     const readFile = util.promisify(fs.readFile);
     const templateString = await readFile(
-      path.resolve('../templates/emails/resetEmail.ejs'),
+      path.resolve(__dirname, '../templates/emails/resetEmail.ejs'),
       'utf8'
     );
-    MailerService.sendMail({
+    await MailerService.sendMail({
       to: email,
       html: _.template(templateString)({
         resetLink: ResetPasswordService.createResetLink(email)
@@ -52,7 +52,7 @@ export class ResetPasswordService {
     });
   };
 
-  static createResetLink = async email => {
+  static createResetLink = email => {
     const queryString = querystring.stringify({
       email,
       type: TokenType.RESET_PASSWORD,
@@ -61,7 +61,7 @@ export class ResetPasswordService {
     return `${env.FRONTEND_URL}/reset?${queryString}`;
   };
 
-  static createToken = async email => {
+  static createToken = email => {
     const payload = {
       email,
       type: TokenType.RESET_PASSWORD,
@@ -82,7 +82,8 @@ export class ResetPasswordService {
     }
 
     // if the current time, is past the expire date
-    if (moment(payload.expireAt).unix() <= moment().unix()) {
+    const now = moment().unix();
+    if (now > payload.expireAt) {
       // then the token is invalid.
       throw new InvalidResetPasswordToken();
     }
