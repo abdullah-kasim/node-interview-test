@@ -20,6 +20,7 @@
     "semi": "off",
     "new-cap": "off",
     "max-params": "off",
+    "no-await-in-loop": "off",
     "import/no-unresolved": "off",
     "unicorn/catch-error-name": "off",
     "no-return-await": "off",
