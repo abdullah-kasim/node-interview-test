@@ -18,11 +18,13 @@
   "rules": {
     "indent": "off",
     "semi": "off",
+    "max-params": "off",
     "no-return-await": "off",
     "unicorn/filename-case": "off",
     "@typescript-eslint/indent": ["error", 2],
     "object-curly-spacing": "off",
     "@typescript-eslint/semi": "off",
+    "@typescript-eslint/camelcase": "off",
     "@typescript-eslint/no-extraneous-class": "off"
   }
 }
