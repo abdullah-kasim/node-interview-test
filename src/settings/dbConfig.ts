@@ -1,19 +1,18 @@
-import './env'
-import {SequelizeOptions} from "sequelize-typescript";
-import path from 'path'
+import path from 'path';
+import { SequelizeOptions } from 'sequelize-typescript';
+import { env } from './env';
 
 interface DbConfig {
-  [key: string]: SequelizeOptions
+  [key: string]: SequelizeOptions;
 }
 
-
-const configs: DbConfig = {
+export const configs: DbConfig = {
   current: {
-    database: process.env.DB_DATABASE,
-    dialect: process.env.DB_DIALECT as any,
-    username: process.env.DB_USERNAME,
-    password: process.env.DB_PASSWORD,
-    port: parseInt(process.env.DB_PORT),
+    database: env.DB_DATABASE,
+    dialect: env.DB_DIALECT as any,
+    username: env.DB_USERNAME,
+    password: env.DB_PASSWORD,
+    port: parseInt(env.DB_PORT, 10),
     modelPaths: [path.resolve(__dirname, '../models')],
     dialectOptions: {
       schema: process.env.DB_SCHEMA
@@ -21,22 +20,18 @@ const configs: DbConfig = {
     define: {
       schema: process.env.DB_SCHEMA,
       underscored: true,
-      freezeTableName: false,
+      freezeTableName: false
     }
-
   },
   test: {
-    database: "docker",
-    dialect: "postgres",
-    username: "docker",
-    password: "docker",
+    database: 'docker',
+    dialect: 'postgres',
+    username: 'docker',
+    password: 'docker',
     port: 15433,
     modelPaths: [path.resolve(__dirname, '../models')],
     dialectOptions: {
-      schema: "todo"
+      schema: 'todo'
     }
   }
-}
-
-
-module.exports = configs
+};

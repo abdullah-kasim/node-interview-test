@@ -27,28 +27,48 @@
     "Abdullah bin Kasim <abdullah.kasim.123@gmail.com> (https://github.com/abdullah-kasim)"
   ],
   "dependencies": {
+    "bcrypt": "^3.0.5",
+    "cors": "^2.8.5",
     "dotenv": "^7.0.0",
+    "express-jwt": "^5.3.1",
     "fastify": "^2.1.0",
+    "firebase-admin": "^7.1.1",
+    "joi": "^14.3.1",
+    "jsonwebtoken": "^8.5.1",
     "knex": "^0.16.3",
+    "lodash": "^4.17.11",
+    "moment": "^2.24.0",
+    "nodemailer": "^6.0.0",
     "pg": "^7.9.0",
     "pg-hstore": "^2.3.2",
     "reflect-metadata": "^0.1.13",
     "sequelize": "^5.1.0",
-    "sequelize-typescript": "^1.0.0-alpha.9"
+    "sequelize-typescript": "^1.0.0-alpha.9",
+    "serialize-javascript": "^1.6.1"
   },
   "devDependencies": {
     "@commitlint/cli": "latest",
     "@commitlint/config-conventional": "latest",
+    "@types/bcrypt": "^3.0.0",
+    "@types/cors": "^2.8.4",
     "@types/dotenv": "^6.1.0",
+    "@types/express-jwt": "^0.0.42",
+    "@types/joi": "^14.3.2",
+    "@types/jsonwebtoken": "^8.3.2",
     "@types/knex": "^0.16.1",
+    "@types/lodash": "^4.14.123",
+    "@types/moment": "^2.13.0",
+    "@types/nodemailer": "^4.6.7",
     "@types/sequelize": "^4.27.44",
+    "@types/serialize-javascript": "^1.5.0",
+    "@types/sinon": "^7.0.10",
     "@typescript-eslint/eslint-plugin": "^1.5.0",
     "@typescript-eslint/parser": "^1.5.0",
     "ava": "latest",
     "codecov": "latest",
     "cross-env": "latest",
     "eslint": "^5.15.3",
-    "eslint-config-prettier": "latest",
+    "eslint-config-prettier": "^4.1.0",
     "eslint-config-xo": "^0.26.0",
     "eslint-config-xo-lass": "latest",
     "eslint-config-xo-typescript": "^0.9.0",
@@ -66,9 +86,11 @@
     "nyc": "latest",
     "pm2": "^3.4.0",
     "prettier": "latest",
+    "prettier-eslint": "^8.8.2",
     "remark-cli": "latest",
     "remark-preset-github": "latest",
     "sequelize-cli": "^5.4.0",
+    "sinon": "^7.3.0",
     "ts-node": "^8.0.3",
     "typescript": "^3.3.4000",
     "xo": "^0.24.0"
@@ -79,7 +101,7 @@
   "homepage": "https://github.com/abdullah-kasim/node-interview-test",
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged && npm test",
+      "pre-commit": "lint-staged",
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   },
@@ -92,6 +114,12 @@
     "linters": {
       "*.js": [
         "xo --fix",
+        "prettier --write",
+        "git add"
+      ],
+      "*.ts": [
+        "xo --fix",
+        "prettier --write",
         "git add"
       ],
       "*.md": [
@@ -133,6 +161,7 @@
   },
   "scripts": {
     "ava": "cross-env NODE_ENV=test ava",
+    "ava-debug": "cross-env NODE_ENV=test node --inspect=0.0.0.0 ./node_modules/.bin/ava --serial",
     "coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
     "debug": "forever -w --watchDirectory='./src' -c 'node --inspect=0.0.0.0 -r ts-node/register' src/server.ts",
     "lint": "xo && remark . -qfo",
@@ -145,6 +174,7 @@
   "xo": {
     "prettier": true,
     "space": true,
+    "semi": false,
     "semicolon": false,
     "extends": [
       "xo-lass",

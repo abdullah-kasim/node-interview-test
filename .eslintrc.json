@@ -12,13 +12,29 @@
     "xo/esnext",
     "xo-lass",
     "xo-typescript",
-    "./node_modules/xo/config/plugins.js"
+    "./node_modules/xo/config/plugins.js",
+    "prettier"
   ],
   "rules": {
-    "indent": "off",
-    "semi": "off",
-    "unicorn/filename-case": "off",
+    "@typescript-eslint/camelcase": "off",
     "@typescript-eslint/indent": ["error", 2],
-    "@typescript-eslint/semi": "off"
+    "@typescript-eslint/member-delimiter-style": "off",
+    "@typescript-eslint/no-extraneous-class": "off",
+    "@typescript-eslint/no-unused-vars": "off",
+    "@typescript-eslint/semi": "off",
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "ava/no-ignored-test-files": "off",
+    "import/no-unresolved": "off",
+    "indent": "off",
+    "max-params": "off",
+    "new-cap": "off",
+    "no-await-in-loop": "off",
+    "no-return-await": "off",
+    "object-curly-spacing": "off",
+    "padding-line-between-statements": "off",
+    "promise/valid-params": "off",
+    "semi": "off",
+    "unicorn/catch-error-name": "off",
+    "unicorn/filename-case": "off"
   }
 }
