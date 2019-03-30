@@ -1,30 +1,25 @@
-import * as Knex from "knex";
-
+import * as Knex from 'knex';
 
 export async function up(knex: Knex): Promise<any> {
-  await knex.schema.createTable('users', (t) => {
+  await knex.schema.createTable('users', t => {
     t.increments('id')
       .primary()
-      .notNullable()
+      .notNullable();
 
     t.string('nickname')
       .unique()
-      .notNullable()
+      .notNullable();
 
     t.string('email')
       .unique()
-      .notNullable()
+      .notNullable();
 
-    t.string('password')
-      .notNullable()
+    t.string('password').notNullable();
 
-    t.timestamps()
-
-  })
+    t.timestamps().defaultTo(knex.raw('now()'));
+  });
 }
-
 
 export async function down(knex: Knex): Promise<any> {
-  await knex.schema.dropTableIfExists('users')
+  await knex.schema.dropTableIfExists('users');
 }
-
