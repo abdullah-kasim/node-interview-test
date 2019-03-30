@@ -16,7 +16,7 @@ export async function up(knex: Knex): Promise<any> {
 
     t.string('password').notNullable();
 
-    t.timestamps().defaultTo(knex.raw('now()'));
+    t.timestamps(false, true);
   });
 }
 

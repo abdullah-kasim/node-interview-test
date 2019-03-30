@@ -29,7 +29,8 @@ export async function up(knex: Knex): Promise<any> {
     t.unique(['user_id', 'device_id']);
 
     t.timestamp('expire_at').notNullable();
-    t.timestamps().defaultTo(knex.raw('now()'));
+
+    t.timestamps(false, true);
   });
 }
 
