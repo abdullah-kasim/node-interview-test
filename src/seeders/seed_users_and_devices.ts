@@ -26,7 +26,7 @@ exports.seed = async function(knex: Knex): Promise<any> {
         refresh_token: await AuthService.createRefreshToken(),
         type: devices[key % 2],
         firebase_token: null,
-        device_id: await RandomHelper.randomString(), // very error-prone
+        device_id: await RandomHelper.randomString(),
         expire_at: expireAt
       });
     });
