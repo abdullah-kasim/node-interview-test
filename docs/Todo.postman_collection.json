@@ -1082,7 +1082,63 @@
 		},
 		{
 			"name": "User",
-			"item": []
+			"item": [
+				{
+					"name": "GetUsers",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "da402a0c-4327-4cdf-b6b7-336f7a718466",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json",
+								"disabled": true
+							},
+							{
+								"key": "Frontend-Token",
+								"type": "text",
+								"value": "{{todo_jwt_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{todo_domain}}/api/v1/user/get?search=user",
+							"host": [
+								"{{todo_domain}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"get"
+							],
+							"query": [
+								{
+									"key": "search",
+									"value": "user"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	],
 	"event": [
@@ -1109,13 +1165,13 @@
 	],
 	"variable": [
 		{
-			"id": "69a56f51-b227-41fb-988b-ac3040d8046b",
+			"id": "f801dfd2-d3b4-4d77-9872-d42a7368c1eb",
 			"key": "todo_domain",
 			"value": "http://localhost:3000",
 			"type": "string"
 		},
 		{
-			"id": "0cbbfd69-026b-4ff2-8560-67cd43f2b614",
+			"id": "6d779db7-5908-47ff-be95-593c0116c233",
 			"key": "todo_jwt_token",
 			"value": "",
 			"type": "string"
