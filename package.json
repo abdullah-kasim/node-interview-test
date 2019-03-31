@@ -118,10 +118,12 @@
   "lint-staged": {
     "linters": {
       "*.js": [
+        "xo --fix",
         "prettier --write",
         "git add"
       ],
       "*.ts": [
+        "xo --fix",
         "prettier --write",
         "git add"
       ],
@@ -146,11 +148,6 @@
       "html",
       "text"
     ]
-  },
-  "prettier": {
-    "singleQuote": true,
-    "bracketSpacing": true,
-    "trailingComma": "none"
   },
   "private": true,
   "remarkConfig": {
