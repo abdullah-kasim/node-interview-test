@@ -98,7 +98,7 @@ export class BoardController {
           .string()
           .required(),
         userId: getJoi()
-          .string()
+          .number()
           .required()
       })
 
@@ -124,8 +124,15 @@ export class BoardController {
       return validation
     }
     const user = await User.findByPk(request.body.userId)
+    const isOwner = await BoardService.validateUserOwnsBoard(user, request.params.boardId)
+    if (isOwner) {
+      // temporary business logic. There are cases where you want to be able to leave the board and transfer ownership
+      return ResponseHelper.validationError(request, reply, {
+        userId: "You can't re-add the owner of the board"
+      })
+    }
 
-    const board = await BoardService.addUserToBoard(user, request.body.boardId)
+    const board = await BoardService.addUserToBoard(user, request.params.boardId)
     return ResponseHelper.create(request, reply, board)
   }
 
@@ -143,7 +150,8 @@ export class BoardController {
         userId: "You can't remove the owner from the board"
       })
     }
-    await BoardService.removeUserFromBoard(user, request.params.boardId)
+    const board = await BoardService.removeUserFromBoard(user, request.params.boardId)
+    return ResponseHelper.create(request, reply, board)
   }
 
   static leaveBoard: DefaultRequestHandler<any, BoardCommonParam> = async (request, reply) => {

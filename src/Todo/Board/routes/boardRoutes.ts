@@ -35,7 +35,7 @@ export const boardRoutes = (fastify: FastifyInstance) => {
 
   fastify.post(`${prefixWithId}/addUser`, ownerOpt, BoardController.addUserToBoard)
 
-  fastify.post(`${prefixWithId}/removeUser`, ownerOpt, BoardController.addUserToBoard)
+  fastify.post(`${prefixWithId}/removeUser`, ownerOpt, BoardController.removeUserFromBoard)
   itemRoutes(fastify, prefixWithId)
 
   // fastify.get(`/api/v1/todo/read`, null)
