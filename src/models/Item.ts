@@ -22,6 +22,9 @@ export class Item extends Model<Item> {
   @Column
   board_id: string;
 
+  @Column
+  content: string;
+
   @BelongsTo(() => Board)
   board: Board;
 }

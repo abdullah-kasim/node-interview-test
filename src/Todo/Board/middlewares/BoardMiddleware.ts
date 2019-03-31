@@ -10,9 +10,28 @@ export class BoardMiddleware {
     const user = await AuthService.getUserFromRequest(request);
     const userOwnsBoard = await BoardService.validateUserOwnsBoard(
       user,
-      request.body.id
+      request.params.boardId
     );
     if (!userOwnsBoard) {
+      throw new UserDoesNotOwnBoard();
+    }
+  };
+
+  /**
+   * Middleware to allow only if board belongs to user
+   * @param request
+   * @param reply
+   */
+  static boardDoesNotBelongsToUser: DefaultRequestHandler = async (
+    request,
+    reply
+  ) => {
+    const user = await AuthService.getUserFromRequest(request);
+    const userOwnsBoard = await BoardService.validateUserOwnsBoard(
+      user,
+      request.params.boardId
+    );
+    if (userOwnsBoard) {
       throw new UserDoesNotOwnBoard();
     }
   };
@@ -25,7 +44,7 @@ export class BoardMiddleware {
 
     const userIsMemberOfBoard = await BoardService.validateUserIsMemberOfBoard(
       user,
-      request.body.id
+      request.params.boardId
     );
     if (!userIsMemberOfBoard) {
       throw new UserDoesNotOwnBoard();

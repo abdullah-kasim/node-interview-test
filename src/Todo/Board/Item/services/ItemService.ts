@@ -35,8 +35,13 @@ export class ItemService {
     return otherItemParams;
   };
 
+  static createItem = async (item: Partial<Item>) => {
+    await Item.create(item);
+    return await Item.findByPk(item.id);
+  };
+
   static syncItem = async (item: Partial<Item>) => {
-    await Item.upsert(ItemService.cleanItem(item));
+    await Item.upsert(item);
     return await Item.findByPk(item.id);
   };
 
@@ -48,5 +53,11 @@ export class ItemService {
     return true;
   };
 
-  static getItems = async (board: Board) => {};
+  static getItems = async (boardId: string) => {
+    return await Item.findAll({
+      where: {
+        board_id: boardId
+      }
+    });
+  };
 }
