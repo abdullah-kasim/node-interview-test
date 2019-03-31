@@ -9,6 +9,10 @@ import { MailerService } from "../../../../src/services/MailerService"
 import { ResetPasswordService } from "../../../../src/Auth/ResetPassword/services/ResetPasswordService"
 import { UserRepository } from "../../../../src/repositories/UserRepository"
 
+test.afterEach(() => {
+  sinon.restore()
+})
+
 test.serial("send reset e-mail if e-mail exists", async t => {
   const email = "test@example.com"
   const sendMail = sinon.stub(MailerService, "sendMail").resolves()
@@ -38,7 +42,6 @@ test.serial("generates a proper reset link", async t => {
   const email = "test@example.com"
   const sendMail = sinon.stub(MailerService, "sendMail").resolves()
   sinon.stub(ResetPasswordService, "createToken").returns("someToken")
-  const createResetLink = sinon.stub(ResetPasswordService, "createResetLink").returns("someResetLink")
   // how do we test that the query string is valid?
   const resetLink = ResetPasswordService.createResetLink(email)
   const queryStringPayload = querystring.parse(resetLink.split("?")[1])
