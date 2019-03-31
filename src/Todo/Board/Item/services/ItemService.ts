@@ -3,7 +3,7 @@ import { User } from '../../../../models/User';
 import { Board } from '../../../../models/Board';
 
 export class ItemService {
-  static validateItemEditable = async (user: User, itemUuid: string) => {
+  static validateItemEditable = async (user: User, itemId: string) => {
     const itemEditableByUser = await Item.findOne({
       include: [
         {
@@ -20,7 +20,7 @@ export class ItemService {
         }
       ],
       where: {
-        id: itemUuid
+        id: itemId
       }
     });
     return itemEditableByUser !== null;

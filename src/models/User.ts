@@ -3,7 +3,6 @@ import {
   Column,
   HasMany,
   Model,
-  Sequelize,
   Table
 } from 'sequelize-typescript';
 import { Device } from './Device';

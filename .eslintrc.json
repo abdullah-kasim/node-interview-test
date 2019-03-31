@@ -26,6 +26,7 @@
     "ava/no-ignored-test-files": "off",
     "import/no-unresolved": "off",
     "import/no-unassigned-import": "off",
+    "prefer-object-spread": "off",
     "indent": "off",
     "max-params": "off",
     "new-cap": "off",

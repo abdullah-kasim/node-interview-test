@@ -6,7 +6,7 @@ import { BoardRepository } from '../repositories/BoardRepository';
 export class BoardService {
   static validateUserOwnsBoard = async (
     user: User,
-    boardUuid: string
+    boardId: string
   ): Promise<boolean> => {
     const board = await Board.findOne({
       include: [
@@ -23,7 +23,7 @@ export class BoardService {
         }
       ],
       where: {
-        id: boardUuid
+        id: boardId
       }
     });
     return board !== null;
@@ -31,7 +31,7 @@ export class BoardService {
 
   static validateUserIsMemberOfBoard = async (
     user: User,
-    boardUuid: string
+    boardId: string
   ): Promise<boolean> => {
     const board = await Board.findOne({
       include: [
@@ -43,7 +43,7 @@ export class BoardService {
         }
       ],
       where: {
-        id: boardUuid
+        id: boardId
       }
     });
     return board !== null;
@@ -57,6 +57,7 @@ export class BoardService {
           through: {
             attributes: ['type']
           },
+          attributes: ['id', 'nickname'],
           where: {
             id: user.id
           }
@@ -65,14 +66,19 @@ export class BoardService {
     });
   };
 
-  static createBoard = async (board: Partial<Board>) => {
-    await Board.create(board);
-    return await Board.findByPk(board.id);
+  static createBoard = async (user: User, boardParam: Partial<Board>) => {
+    const board = await Board.create(boardParam);
+    await board.$add('users', user, {
+      through: {
+        type: BoardUserType.OWNER
+      }
+    });
+    return await BoardRepository.getBoard(board.id);
   };
 
   static syncBoard = async (board: Partial<Board>) => {
     await Board.upsert(board);
-    return await Board.findByPk(board.id);
+    return await BoardRepository.getBoard(board.id);
   };
 
   static deleteBoard = async (boardId: string) => {

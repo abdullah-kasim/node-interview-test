@@ -10,6 +10,7 @@ export class BoardRepository {
           through: {
             attributes: ['type']
           },
+          attributes: ['id', 'nickname'],
           required: false
         }
       ],
