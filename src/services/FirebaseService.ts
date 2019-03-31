@@ -2,13 +2,31 @@ import firebaseAdmin from "firebase-admin"
 
 export class FirebaseService {
   static sendMessage = async (tokens: string[], data: any) => {
-    return await firebaseAdmin.messaging().sendMulticast(
-      {
-        data,
-        tokens
-      },
-      true
-    )
+    const stringifiedData = Object.keys(data).reduce((previousValue, key, currentIndex) => {
+      let stringifiedRow = null
+      if (typeof data[key] === "string") {
+        stringifiedRow = data[key]
+      } else {
+        stringifiedRow = JSON.stringify(data[key])
+      }
+      return {
+        ...previousValue,
+        [key]: stringifiedRow
+      }
+    }, {})
+
+    try {
+      const response = await firebaseAdmin.messaging().sendMulticast(
+        {
+          data: stringifiedData,
+          tokens
+        },
+        false
+      )
+      return response
+    } catch (e) {
+      return false
+    }
   }
 
   static getUser = async firebaseToken => {

@@ -59,7 +59,7 @@ export class ItemService {
         {
           model: Board,
           where: {
-            board_id: item.board_id
+            id: item.board_id
           },
           required: true
         }
