@@ -1,11 +1,12 @@
-import { DefaultRequestHandler } from '../../../../customTypes/fastify';
-import { getJoi } from '../../../../settings/validate';
-import { ResponseHelper } from '../../../../helpers/ResponseHelper';
-import { ItemService } from '../services/ItemService';
+import { DefaultRequestHandler } from "../../../../customTypes/fastify"
+import { getJoi } from "../../../../settings/validate"
+import { ResponseHelper } from "../../../../helpers/ResponseHelper"
+import { ItemService } from "../services/ItemService"
+import { AuthService } from "../../../../Auth/services/AuthService"
 
 interface ItemCommonParam {
-  boardId: string;
-  itemId: string;
+  boardId: string
+  itemId: string
 }
 
 export class ItemController {
@@ -24,81 +25,69 @@ export class ItemController {
         content: getJoi()
           .string()
           .required()
-      });
+      })
     const validation = schema.validate(
       {
         ...request.body,
         id: request.params.itemId
       },
       { abortEarly: false, allowUnknown: true }
-    );
+    )
     if (validation.error !== null) {
-      return ResponseHelper.validationError(request, reply, validation.error);
+      return ResponseHelper.validationError(request, reply, validation.error)
     }
-    return true;
-  };
+    return true
+  }
 
-  static syncItem: DefaultRequestHandler<any, ItemCommonParam> = async (
-    request,
-    reply
-  ) => {
-    const validation = ItemController.validateSyncOrCreate(request, reply);
+  static syncItem: DefaultRequestHandler<any, ItemCommonParam> = async (request, reply) => {
+    const validation = ItemController.validateSyncOrCreate(request, reply)
     if (validation !== true) {
-      return validation;
+      return validation
     }
-
-    const item = await ItemService.syncItem({
+    const user = await AuthService.getUserFromRequest(request)
+    const item = await ItemService.syncItem(user, {
       ...request.body,
       board_id: request.params.boardId,
       id: request.params.itemId
-    });
+    })
 
-    return ResponseHelper.create(request, reply, item);
-  };
+    return ResponseHelper.create(request, reply, item)
+  }
 
-  static deleteItem: DefaultRequestHandler<any, ItemCommonParam> = async (
-    request,
-    reply
-  ) => {
-    await ItemService.deleteItem(request.params.itemId);
+  static deleteItem: DefaultRequestHandler<any, ItemCommonParam> = async (request, reply) => {
+    const user = await AuthService.getUserFromRequest(request)
+    await ItemService.deleteItem(user, request.params.itemId)
 
-    return ResponseHelper.ok(request, reply);
-  };
+    return ResponseHelper.ok(request, reply)
+  }
 
-  static getItems: DefaultRequestHandler<any, ItemCommonParam> = async (
-    request,
-    reply
-  ) => {
-    const items = await ItemService.getItems(request.params.boardId);
+  static getItems: DefaultRequestHandler<any, ItemCommonParam> = async (request, reply) => {
+    const items = await ItemService.getItems(request.params.boardId)
 
-    return ResponseHelper.create(request, reply, items);
-  };
+    return ResponseHelper.create(request, reply, items)
+  }
 
-  static createItem: DefaultRequestHandler<any, ItemCommonParam> = async (
-    request,
-    reply
-  ) => {
-    const validation = ItemController.validateSyncOrCreate(request, reply);
+  static createItem: DefaultRequestHandler<any, ItemCommonParam> = async (request, reply) => {
+    const validation = ItemController.validateSyncOrCreate(request, reply)
     if (validation !== true) {
-      return validation;
+      return validation
     }
+
+    const user = await AuthService.getUserFromRequest(request)
 
     // we have to replace the payload's board id and item id - the middleware only validated those.
-    const item = await ItemService.createItem({
+    const item = await ItemService.createItem(user, {
       ...request.body,
       board_id: request.params.boardId,
       id: request.params.itemId
-    });
+    })
 
-    return ResponseHelper.create(request, reply, item);
-  };
+    return ResponseHelper.create(request, reply, item)
+  }
 
-  static getItem: DefaultRequestHandler<any, ItemCommonParam> = async (
-    request,
-    reply
-  ) => {
-    const item = await ItemService.getItem(request.params.itemId);
+  static getItem: DefaultRequestHandler<any, ItemCommonParam> = async (request, reply) => {
+    const item = await ItemService.getItem(request.params.itemId)
 
-    return ResponseHelper.create(request, reply, item);
-  };
+    return ResponseHelper.create(request, reply, item)
+  }
 }
