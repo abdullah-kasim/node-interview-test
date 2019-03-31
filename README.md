@@ -13,37 +13,13 @@
 ## Table of Contents
 
 * [Install](#install)
-* [Usage](#usage)
 * [Contributors](#contributors)
 * [License](#license)
 
 
 ## Install
 
-[npm][]:
-
-```sh
-npm install node-interview-test
-```
-
-[yarn][]:
-
-```sh
-yarn add node-interview-test
-```
-
-
-## Usage
-
-```js
-const NodeInterviewTest = require('node-interview-test');
-
-const nodeInterviewTest = new NodeInterviewTest();
-
-console.log(nodeInterviewTest.renderName());
-// script
-```
-
+Head to `docs/README.md`
 
 ## Contributors
 

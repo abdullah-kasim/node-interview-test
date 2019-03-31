@@ -2,6 +2,8 @@ import firebaseAdmin from "firebase-admin"
 
 export class FirebaseService {
   static sendMessage = async (tokens: string[], data: any) => {
+    // so, sending this message is pretty much just sending garbage
+    // we need to refactor this later so that it's nice and beautiful with app linking and stuff
     const stringifiedData = Object.keys(data).reduce((previousValue, key, currentIndex) => {
       let stringifiedRow = null
       if (typeof data[key] === "string") {

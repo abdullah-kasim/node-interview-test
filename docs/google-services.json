@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "433236448838",
+    "firebase_url": "https://aym-interview.firebaseio.com",
+    "project_id": "aym-interview",
+    "storage_bucket": "aym-interview.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:433236448838:android:7b41fd8ce1e97722",
+        "android_client_info": {
+          "package_name": "fr.smarquis.fcm"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "433236448838-u60qb57gifjuv5gkltimkn1251nleeao.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDvqW1BRUPjfqHifmBIHnsyrRQDvd5MXlE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
