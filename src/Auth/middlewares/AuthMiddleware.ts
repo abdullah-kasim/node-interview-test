@@ -1,16 +1,9 @@
-import { IncomingMessage, ServerResponse } from 'http';
-import {
-  DefaultBody,
-  DefaultHeaders,
-  DefaultParams,
-  DefaultQuery,
-  FastifyMiddleware,
-  RequestHandler
-} from 'fastify';
-import { DefaultRequestHandler } from '../../customTypes/fastify';
-import { AuthService } from '../services/AuthService';
-import { AuthHeader } from '../constants/AuthHeader';
-import { InvalidJwtAuthorizationHeader } from './exceptions/InvalidJwtAuthorizationHeader';
+import { IncomingMessage, ServerResponse } from "http"
+import { DefaultBody, DefaultHeaders, DefaultParams, DefaultQuery, FastifyMiddleware, RequestHandler } from "fastify"
+import { DefaultRequestHandler } from "../../customTypes/fastify"
+import { AuthService } from "../services/AuthService"
+import { AuthHeader } from "../constants/AuthHeader"
+import { InvalidJwtAuthorizationHeader } from "./exceptions/InvalidJwtAuthorizationHeader"
 
 export class AuthMiddleware {
   /**
@@ -23,17 +16,20 @@ export class AuthMiddleware {
    */
   static isJwtTokenValid: DefaultRequestHandler = async (request, reply) => {
     // it's a custom header, so there's no need to cater for Bearer
-    const authorizationHeader = request.headers[
-      AuthHeader.FRONTEND_TOKEN
-    ] as string;
+    const authorizationHeader = request.headers[AuthHeader.FRONTEND_TOKEN] as string
     if (!authorizationHeader) {
-      throw new InvalidJwtAuthorizationHeader();
+      throw new InvalidJwtAuthorizationHeader()
     }
     try {
-      AuthService.verifyAndGetJwtToken(authorizationHeader);
+      AuthService.verifyAndGetJwtToken(authorizationHeader)
     } catch (e) {
-      throw new InvalidJwtAuthorizationHeader();
+      throw new InvalidJwtAuthorizationHeader()
+    }
+    // last check - check the db!
+    const user = await AuthService.getUserFromRequest(request)
+    if (!user) {
+      throw new InvalidJwtAuthorizationHeader()
     }
     // ok, verified, let the user in.
-  };
+  }
 }

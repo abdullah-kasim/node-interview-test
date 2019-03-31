@@ -76,7 +76,7 @@ export class AuthController {
         user: AuthService.cleanUser(tokenDetails.user)
       })
     } catch (e) {
-      return ResponseHelper.validationError(request, reply, e)
+      return ResponseHelper.validationError(request, reply, e.message)
     }
   }
 
@@ -100,7 +100,7 @@ export class AuthController {
       await AuthService.register(nickname, email, password)
       return ResponseHelper.ok(request, reply)
     } catch (e) {
-      return ResponseHelper.validationError(request, reply, e)
+      return ResponseHelper.validationError(request, reply, e.message)
     }
   }
 
