@@ -98,6 +98,7 @@
     "remark-preset-github": "latest",
     "sequelize-cli": "^5.4.0",
     "sinon": "^7.3.0",
+    "source-map-support": "^0.5.11",
     "ts-node": "^8.0.3",
     "typescript": "^3.3.4000",
     "xo": "^0.24.0"
@@ -141,6 +142,19 @@
     "lines": 10,
     "functions": 10,
     "branches": 10,
+    "extension": [
+      ".ts",
+      ".tsx"
+    ],
+    "exclude": [
+      "**/*.d.ts",
+      "knexfile.ts",
+      "coverage/**/*",
+      "pm2/**/*",
+      "src/migrations/**/*",
+      "src/seeders/**/*"
+    ],
+    "all": true,
     "reporter": [
       "lcov",
       "html",
