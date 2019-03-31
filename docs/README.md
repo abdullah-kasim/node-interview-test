@@ -2,6 +2,8 @@
 
 Since this is just a demo app, I'll include the keys with this repo here rather than follow best practices
 
+Note: Tested only on linux
+
 1. Prerequisites: `yarn`, `node v10`, `docker`
 2. All instructions should be done relative to the project root
 3. For starters, go to the project dir and copy `.env.example` to `.env`
@@ -49,7 +51,8 @@ See [https://github.com/firebase/firebaseui-web/tree/master/demo](https://github
 
 You can use the credentials above to replace the default credentials in the repo above.
 
-Once you have the server started and authenticated an account, the firebase token can then be obtained by doing the following inside the console:
+Once you have the firebase demo server started and authenticated an account, the firebase token can then be 
+obtained by running the following inside the console:
 
 ```js
 
