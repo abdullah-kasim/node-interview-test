@@ -30,7 +30,7 @@ Head to `docs/README.md`
 
 ## License
 
-[GPL3.0](LICENSE) © [Abdullah bin Kasim](https://github.com/abdullah-kasim)
+[AGPL3.0-or-later](LICENSE) © [Abdullah bin Kasim](https://github.com/abdullah-kasim)
 
 
 ## 

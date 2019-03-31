@@ -116,7 +116,7 @@
     "lass",
     "node-interview-test"
   ],
-  "license": "GPL3.0",
+  "license": "AGPL-3.0-or-later",
   "lint-staged": {
     "linters": {
       "*.js": [
