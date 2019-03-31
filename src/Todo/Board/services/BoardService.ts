@@ -61,6 +61,7 @@ export class BoardService {
   }
 
   static createBoard = async (user: User, boardParam: Partial<Board>) => {
+    // use a transaction later
     const board = await Board.create(boardParam)
     await board.$add("users", user, {
       through: {

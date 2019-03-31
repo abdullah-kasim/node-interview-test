@@ -896,6 +896,13 @@
     "@types/express-serve-static-core" "*"
     "@types/serve-static" "*"
 
+"@types/fastify-cors@^2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@types/fastify-cors/-/fastify-cors-2.1.0.tgz#cf09d8f2726c23a6eca8149de26ab19f80bfcbb4"
+  integrity sha512-o01k3tVq/6kNDv2Q+STSHOsgRPD1jEL5kzhBp6RFu0VSHdyUW6WnOctuS1gC9mdlZyuldGR0Eo8vdkP8ZrPa8g==
+  dependencies:
+    fastify-cors "*"
+
 "@types/form-data@*":
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/@types/form-data/-/form-data-2.2.1.tgz#ee2b3b8eaa11c0938289953606b745b738c54b1e"
@@ -3681,6 +3688,21 @@ fast-text-encoding@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/fast-text-encoding/-/fast-text-encoding-1.0.0.tgz#3e5ce8293409cfaa7177a71b9ca84e1b1e6f25ef"
   integrity sha512-R9bHCvweUxxwkDwhjav5vxpFvdPGlVngtqmx4pIZfSUhM/Q4NiIUHB456BAf+Q1Nwu3HEZYONtu+Rya+af4jiQ==
+
+fastify-cors@*, fastify-cors@^2.1.2:
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/fastify-cors/-/fastify-cors-2.1.2.tgz#5cafc79b974a73f61136f1871bf59208af06b7b0"
+  integrity sha512-/TEco5naXbM2ob3fSvl8IvbRpM4fBDLnwOZ7KJ5frpgiky8Yv0O8k8W5JE3oc64xfNeVcv/yBkqgRByRPk1ecw==
+  dependencies:
+    fastify-plugin "^1.5.0"
+    vary "^1.1.2"
+
+fastify-plugin@^1.5.0:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/fastify-plugin/-/fastify-plugin-1.5.0.tgz#4bea12c54112f4749c17f3a1f17356cbdfa661af"
+  integrity sha512-bXKSTR4Q1lxERf1p/10Aakga570XtcxCCvPR1gby5js1XOtg7E8UV+aHHEPbGowQGV/KVb7ARBROhPk2I4DfBw==
+  dependencies:
+    semver "^5.5.0"
 
 fastify@^2.1.0:
   version "2.1.0"
@@ -10342,7 +10364,7 @@ validator@^10.11.0:
   resolved "https://registry.yarnpkg.com/validator/-/validator-10.11.0.tgz#003108ea6e9a9874d31ccc9e5006856ccd76b228"
   integrity sha512-X/p3UZerAIsbBfN/IwahhYaBbY68EN/UQBWHtsbXGT5bfrH/p4NQzUCG1kF/rtKaNpnJ7jAu6NGTdSNtyNIXMw==
 
-vary@^1:
+vary@^1, vary@^1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/vary/-/vary-1.1.2.tgz#2299f02c6ded30d4a5961b0b9f74524a18f634fc"
   integrity sha1-IpnwLG3tMNSllhsLn3RSShj2NPw=

@@ -87,6 +87,7 @@ export class BoardController {
    */
   static deleteBoard: DefaultRequestHandler<any, BoardCommonParam> = async (request, reply) => {
     await BoardService.deleteBoard(request.params.boardId)
+    return ResponseHelper.ok(request, reply)
   }
 
   static validateAction = (request, reply) => {
