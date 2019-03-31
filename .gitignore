@@ -3,6 +3,7 @@
 .idea
 node_modules
 coverage
+coverage.lcov
 .nyc_output
 .env
 yarn-error.log
