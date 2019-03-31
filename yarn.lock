@@ -806,7 +806,7 @@
   resolved "https://registry.yarnpkg.com/@types/bcrypt/-/bcrypt-3.0.0.tgz#851489a9065a067cb7f3c9cbe4ce9bed8bba0876"
   integrity sha512-nohgNyv+1ViVcubKBh0+XiNJ3dO8nYu///9aJ4cgSqv70gBL+94SNy/iC2NLzKPT2Zt/QavrOkBVbZRLZmw6NQ==
 
-"@types/bluebird@*", "@types/bluebird@^3.5.25":
+"@types/bluebird@*", "@types/bluebird@^3.5.25", "@types/bluebird@^3.5.26":
   version "3.5.26"
   resolved "https://registry.yarnpkg.com/@types/bluebird/-/bluebird-3.5.26.tgz#a38c438ae84fa02431d6892edf86e46edcbca291"
   integrity sha512-aj2mrBLn5ky0GmAg6IPXrQjnN0iB/ulozuJ+oZdrHRAzRbXjGmu4UXsNCjFvPbSaaPZmniocdOzsM392qLOlmQ==
@@ -896,6 +896,13 @@
     "@types/express-serve-static-core" "*"
     "@types/serve-static" "*"
 
+"@types/fastify-cors@^2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@types/fastify-cors/-/fastify-cors-2.1.0.tgz#cf09d8f2726c23a6eca8149de26ab19f80bfcbb4"
+  integrity sha512-o01k3tVq/6kNDv2Q+STSHOsgRPD1jEL5kzhBp6RFu0VSHdyUW6WnOctuS1gC9mdlZyuldGR0Eo8vdkP8ZrPa8g==
+  dependencies:
+    fastify-cors "*"
+
 "@types/form-data@*":
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/@types/form-data/-/form-data-2.2.1.tgz#ee2b3b8eaa11c0938289953606b745b738c54b1e"
@@ -968,6 +975,11 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-10.14.3.tgz#170a81168620d931cc3b83460be253cadd3028f1"
   integrity sha512-2lhc7S28vo8FwR3Jv3Ifyd77AxEsx+Nl9ajWiac6/eWuvZ84zPK4RE05pfqcn3acIzlZDpQj5F1rIKQZX3ptLQ==
 
+"@types/node@^11.12.2":
+  version "11.12.2"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-11.12.2.tgz#d7f302e74b10e9801d52852137f652d9ee235da8"
+  integrity sha512-c82MtnqWB/CqqK7/zit74Ob8H1dBdV7bK+BcErwtXbe0+nUGkgzq5NTDmRW/pAv2lFtmeNmW95b0zK2hxpeklg==
+
 "@types/node@^8.0.53", "@types/node@^8.0.7":
   version "8.10.45"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-8.10.45.tgz#4c49ba34106bc7dced77ff6bae8eb6543cde8351"
@@ -1033,10 +1045,22 @@
   resolved "https://registry.yarnpkg.com/@types/unist/-/unist-2.0.3.tgz#9c088679876f374eb5983f150d4787aa6fb32d7e"
   integrity sha512-FvUupuM3rlRsRtCN+fDudtmytGO6iHJuuRKS1Ss0pG5z8oX0diNEw94UEL7hgDbpN94rgaK5R7sWm6RrSkZuAQ==
 
+"@types/uuid@^3.4.4":
+  version "3.4.4"
+  resolved "https://registry.yarnpkg.com/@types/uuid/-/uuid-3.4.4.tgz#7af69360fa65ef0decb41fd150bf4ca5c0cefdf5"
+  integrity sha512-tPIgT0GUmdJQNSHxp0X2jnpQfBSTfGxUMc/2CXBU2mnyTFVYVa2ojpoQ74w0U2yn2vw3jnC640+77lkFFpdVDw==
+  dependencies:
+    "@types/node" "*"
+
 "@types/validator@*":
   version "10.9.0"
   resolved "https://registry.yarnpkg.com/@types/validator/-/validator-10.9.0.tgz#747f36c7ad281da769458ab4c3b8837aee1578b6"
   integrity sha512-mf0VpXk+NoTmkUmuJCsdwBYxjYZW41amCSzd4t/fABMKl+qGMViwFP0pR7ukFdZRXWI1LIkca3VIbXVBmWZ4kQ==
+
+"@types/validator@^10.11.0":
+  version "10.11.0"
+  resolved "https://registry.yarnpkg.com/@types/validator/-/validator-10.11.0.tgz#aae9009ce28cc4f878e32c34d3900a81193c98d5"
+  integrity sha512-i1aY7RKb6HmQIEnK0cBmUZUp1URx0riIHw/GYNoZ46Su0GWfLiDmMI8zMRmaauMnOTg2bQag0qfwcyUFC9Tn+A==
 
 "@types/vfile-message@*":
   version "1.0.1"
@@ -3664,6 +3688,21 @@ fast-text-encoding@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/fast-text-encoding/-/fast-text-encoding-1.0.0.tgz#3e5ce8293409cfaa7177a71b9ca84e1b1e6f25ef"
   integrity sha512-R9bHCvweUxxwkDwhjav5vxpFvdPGlVngtqmx4pIZfSUhM/Q4NiIUHB456BAf+Q1Nwu3HEZYONtu+Rya+af4jiQ==
+
+fastify-cors@*, fastify-cors@^2.1.2:
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/fastify-cors/-/fastify-cors-2.1.2.tgz#5cafc79b974a73f61136f1871bf59208af06b7b0"
+  integrity sha512-/TEco5naXbM2ob3fSvl8IvbRpM4fBDLnwOZ7KJ5frpgiky8Yv0O8k8W5JE3oc64xfNeVcv/yBkqgRByRPk1ecw==
+  dependencies:
+    fastify-plugin "^1.5.0"
+    vary "^1.1.2"
+
+fastify-plugin@^1.5.0:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/fastify-plugin/-/fastify-plugin-1.5.0.tgz#4bea12c54112f4749c17f3a1f17356cbdfa661af"
+  integrity sha512-bXKSTR4Q1lxERf1p/10Aakga570XtcxCCvPR1gby5js1XOtg7E8UV+aHHEPbGowQGV/KVb7ARBROhPk2I4DfBw==
+  dependencies:
+    semver "^5.5.0"
 
 fastify@^2.1.0:
   version "2.1.0"
@@ -10325,7 +10364,7 @@ validator@^10.11.0:
   resolved "https://registry.yarnpkg.com/validator/-/validator-10.11.0.tgz#003108ea6e9a9874d31ccc9e5006856ccd76b228"
   integrity sha512-X/p3UZerAIsbBfN/IwahhYaBbY68EN/UQBWHtsbXGT5bfrH/p4NQzUCG1kF/rtKaNpnJ7jAu6NGTdSNtyNIXMw==
 
-vary@^1:
+vary@^1, vary@^1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/vary/-/vary-1.1.2.tgz#2299f02c6ded30d4a5961b0b9f74524a18f634fc"
   integrity sha1-IpnwLG3tMNSllhsLn3RSShj2NPw=

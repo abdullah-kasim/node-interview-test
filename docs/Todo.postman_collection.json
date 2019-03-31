@@ -1,0 +1,1124 @@
+{
+	"info": {
+		"_postman_id": "6c9d0876-9448-46d0-aaae-431f191f00f2",
+		"name": "Todo",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "ResetPassword",
+					"item": [
+						{
+							"name": "SendResetEmail",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "da402a0c-4327-4cdf-b6b7-336f7a718466",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Frontend-Token",
+										"type": "text",
+										"value": "{{todo_jwt_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"email\": \"password@getnada.com\"\n}"
+								},
+								"url": {
+									"raw": "{{todo_domain}}/api/v1/auth/resetPassword/sendResetEmail",
+									"host": [
+										"{{todo_domain}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"auth",
+										"resetPassword",
+										"sendResetEmail"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "ResetPassword",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "da402a0c-4327-4cdf-b6b7-336f7a718466",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Frontend-Token",
+										"type": "text",
+										"value": "{{todo_jwt_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"token\": \"iPBiCiVq2G12aTC3vXZPAA==.OuzmNx2ZsmEtoJRan2YW5wHBR6tUAr0cxoml4OR0ewHV6aJ7yoPtqkA5Wgmk+lYw8UcZoLKmUUtDrl7OMC0zUeICoXsFJDle0Wj99PMvBMk=\",\n\t\"password\": \"password\"\n}"
+								},
+								"url": {
+									"raw": "{{todo_domain}}/api/v1/auth/resetPassword/reset",
+									"host": [
+										"{{todo_domain}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"auth",
+										"resetPassword",
+										"reset"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "da402a0c-4327-4cdf-b6b7-336f7a718466",
+								"exec": [
+									"const responseData = pm.response.json().data;",
+									"if (responseData) {",
+									"    postman.setEnvironmentVariable(\"todo_jwt_token\", responseData.accessToken);",
+									"    postman.setEnvironmentVariable(\"todo_refresh_token\", responseData.refreshToken);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"user1@getnada.com\",\n\t\"password\": \"password123456\",\n\t\"deviceId\": \"thisNeedsToBeRandom\",\n\t\"type\": \"WEB\"\n}"
+						},
+						"url": {
+							"raw": "{{todo_domain}}/api/v1/auth/login",
+							"host": [
+								"{{todo_domain}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LoginUsingFirebase",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "da402a0c-4327-4cdf-b6b7-336f7a718466",
+								"exec": [
+									"const responseData = pm.response.json().data;",
+									"if (responseData) {",
+									"    postman.setEnvironmentVariable(\"todo_jwt_token\", responseData.accessToken);",
+									"    postman.setEnvironmentVariable(\"todo_refresh_token\", responseData.refreshToken);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"firebaseToken\": \"eyJhbGciOiJSUzI1NiIsImtpZCI6ImZmMWRmNWExNWI1Y2Y1ODJiNjFhMjEzODVjMGNmYWVkZmRiNmE3NDgiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiQWJkdWxsYWggS2FzaW0iLCJwaWN0dXJlIjoiaHR0cHM6Ly9saDYuZ29vZ2xldXNlcmNvbnRlbnQuY29tLy0tNUdfRWFrN0lZQS9BQUFBQUFBQUFBSS9BQUFBQUFBQUFBQS9BQ0hpM3JjdV9xeEE0SmtZTG9NdmNVcEFkNm9MNjJKb0d3L21vL3Bob3RvLmpwZyIsImlzcyI6Imh0dHBzOi8vc2VjdXJldG9rZW4uZ29vZ2xlLmNvbS9heW0taW50ZXJ2aWV3IiwiYXVkIjoiYXltLWludGVydmlldyIsImF1dGhfdGltZSI6MTU1Mzk2NDM1MywidXNlcl9pZCI6ImthbmRMdUZIYXlRWlg4dkhHdjlDSDBlWGlUQjMiLCJzdWIiOiJrYW5kTHVGSGF5UVpYOHZIR3Y5Q0gwZVhpVEIzIiwiaWF0IjoxNTUzOTY2NzExLCJleHAiOjE1NTM5NzAzMTEsImVtYWlsIjoiYWJkdWxsYWgua2FzaW0uMTIzQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7Imdvb2dsZS5jb20iOlsiMTAyOTgwNjU2MDU0MjA1NjY2NDQ3Il0sImVtYWlsIjpbImFiZHVsbGFoLmthc2ltLjEyM0BnbWFpbC5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJnb29nbGUuY29tIn19.IL7QwkFDm-HeTw9ZMSNrtxiYFLc4blqabvEiv0RpOOhf6EGdAaWP8jSvcC6SlsmXws97Sl5tvihnD5J46Vs7yEiTkenDoXLVtDeq7yDKHM-g2J8MMGsy0RdTuPAaK8qrKr5EXUzcbht03LC5ddxH7MlnGrS9N7IOJ2H9jLmZYqVwrxif7bp2YD0KvajQzXzrhtX8IRaizZQlDpzXCEZlIMjjc8AFrDymeQS1q9cYVdmtgf8ShCKVeJWg7Gpdq-OAHnZgfEuaBY3dkOpH3IwLjvnJChASbTSP8TxnQVOvBUx9Zkzce-XAEOgVf5WBblfyAXoiBpthu1-gFYXDu7eycA\",\n\t\"deviceId\": \"thisNeedsToBeRandom\",\n\t\"type\": \"WEB\"\n}"
+						},
+						"url": {
+							"raw": "{{todo_domain}}/api/v1/auth/loginUsingFirebase",
+							"host": [
+								"{{todo_domain}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"loginUsingFirebase"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "RefreshToken",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "da402a0c-4327-4cdf-b6b7-336f7a718466",
+								"exec": [
+									"const responseData = pm.response.json().data;",
+									"if (responseData) {",
+									"    postman.setEnvironmentVariable(\"todo_jwt_token\", responseData.accessToken);",
+									"    postman.setEnvironmentVariable(\"todo_refresh_token\", responseData.refreshToken);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"refreshToken\": \"{{todo_refresh_token}}\"\n}"
+						},
+						"url": {
+							"raw": "{{todo_domain}}/api/v1/auth/refresh",
+							"host": [
+								"{{todo_domain}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"refresh"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "da402a0c-4327-4cdf-b6b7-336f7a718466",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Frontend-Token",
+								"value": "{{todo_jwt_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"all\": false\n}"
+						},
+						"url": {
+							"raw": "{{todo_domain}}/api/v1/auth/logout",
+							"host": [
+								"{{todo_domain}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "da402a0c-4327-4cdf-b6b7-336f7a718466",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Frontend-Token",
+								"type": "text",
+								"value": "{{todo_jwt_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"password\": \"password\",\n\t\"email\": \"password@getnada.com\",\n\t\"nickname\": \"passwordDude\"\n}"
+						},
+						"url": {
+							"raw": "{{todo_domain}}/api/v1/auth/register",
+							"host": [
+								"{{todo_domain}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "RegisterUsingFirebase",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "da402a0c-4327-4cdf-b6b7-336f7a718466",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Frontend-Token",
+								"type": "text",
+								"value": "{{todo_jwt_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"firebaseToken\": \"eyJhbGciOiJSUzI1NiIsImtpZCI6ImZmMWRmNWExNWI1Y2Y1ODJiNjFhMjEzODVjMGNmYWVkZmRiNmE3NDgiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiQWJkdWxsYWggS2FzaW0iLCJwaWN0dXJlIjoiaHR0cHM6Ly9saDYuZ29vZ2xldXNlcmNvbnRlbnQuY29tLy0tNUdfRWFrN0lZQS9BQUFBQUFBQUFBSS9BQUFBQUFBQUFBQS9BQ0hpM3JjdV9xeEE0SmtZTG9NdmNVcEFkNm9MNjJKb0d3L21vL3Bob3RvLmpwZyIsImlzcyI6Imh0dHBzOi8vc2VjdXJldG9rZW4uZ29vZ2xlLmNvbS9heW0taW50ZXJ2aWV3IiwiYXVkIjoiYXltLWludGVydmlldyIsImF1dGhfdGltZSI6MTU1Mzk2NDM1MywidXNlcl9pZCI6ImthbmRMdUZIYXlRWlg4dkhHdjlDSDBlWGlUQjMiLCJzdWIiOiJrYW5kTHVGSGF5UVpYOHZIR3Y5Q0gwZVhpVEIzIiwiaWF0IjoxNTUzOTY2NzExLCJleHAiOjE1NTM5NzAzMTEsImVtYWlsIjoiYWJkdWxsYWgua2FzaW0uMTIzQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7Imdvb2dsZS5jb20iOlsiMTAyOTgwNjU2MDU0MjA1NjY2NDQ3Il0sImVtYWlsIjpbImFiZHVsbGFoLmthc2ltLjEyM0BnbWFpbC5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJnb29nbGUuY29tIn19.IL7QwkFDm-HeTw9ZMSNrtxiYFLc4blqabvEiv0RpOOhf6EGdAaWP8jSvcC6SlsmXws97Sl5tvihnD5J46Vs7yEiTkenDoXLVtDeq7yDKHM-g2J8MMGsy0RdTuPAaK8qrKr5EXUzcbht03LC5ddxH7MlnGrS9N7IOJ2H9jLmZYqVwrxif7bp2YD0KvajQzXzrhtX8IRaizZQlDpzXCEZlIMjjc8AFrDymeQS1q9cYVdmtgf8ShCKVeJWg7Gpdq-OAHnZgfEuaBY3dkOpH3IwLjvnJChASbTSP8TxnQVOvBUx9Zkzce-XAEOgVf5WBblfyAXoiBpthu1-gFYXDu7eycA\",\n\t\"nickname\": \"firebaseDude\"\n}"
+						},
+						"url": {
+							"raw": "{{todo_domain}}/api/v1/auth/registerUsingFirebase",
+							"host": [
+								"{{todo_domain}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"registerUsingFirebase"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TestMiddleware",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "da402a0c-4327-4cdf-b6b7-336f7a718466",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Frontend-Token",
+								"value": "{{todo_jwt_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{}"
+						},
+						"url": {
+							"raw": "{{todo_domain}}/api/v1/auth/testMiddleware",
+							"host": [
+								"{{todo_domain}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"testMiddleware"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Board",
+			"item": [
+				{
+					"name": "Item",
+					"item": [
+						{
+							"name": "CreateItem",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "da402a0c-4327-4cdf-b6b7-336f7a718466",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Frontend-Token",
+										"type": "text",
+										"value": "{{todo_jwt_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"content\": \"Trigger message!!\"\n}"
+								},
+								"url": {
+									"raw": "{{todo_domain}}/api/v1/todo/board/fdcd8a20-5391-11e9-be1a-133465a62776/item/9f678700-5397-11e9-be1a-133465a62776/create",
+									"host": [
+										"{{todo_domain}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"todo",
+										"board",
+										"fdcd8a20-5391-11e9-be1a-133465a62776",
+										"item",
+										"9f678700-5397-11e9-be1a-133465a62776",
+										"create"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetItem",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "da402a0c-4327-4cdf-b6b7-336f7a718466",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Frontend-Token",
+										"type": "text",
+										"value": "{{todo_jwt_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"name\": \"Hello there!\"\n}"
+								},
+								"url": {
+									"raw": "{{todo_domain}}/api/v1/todo/board/fdcd8a20-5391-11e9-be1a-133465a62776/item/478aa860-5396-11e9-be1a-133465a62776/get",
+									"host": [
+										"{{todo_domain}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"todo",
+										"board",
+										"fdcd8a20-5391-11e9-be1a-133465a62776",
+										"item",
+										"478aa860-5396-11e9-be1a-133465a62776",
+										"get"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetItems",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "da402a0c-4327-4cdf-b6b7-336f7a718466",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Frontend-Token",
+										"type": "text",
+										"value": "{{todo_jwt_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"name\": \"Hello there!\"\n}"
+								},
+								"url": {
+									"raw": "{{todo_domain}}/api/v1/todo/board/fdcd8a20-5391-11e9-be1a-133465a62776/item/get",
+									"host": [
+										"{{todo_domain}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"todo",
+										"board",
+										"fdcd8a20-5391-11e9-be1a-133465a62776",
+										"item",
+										"get"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "SyncItem",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "da402a0c-4327-4cdf-b6b7-336f7a718466",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "Frontend-Token",
+										"type": "text",
+										"value": "{{todo_jwt_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"content\": \"Do something else!\",\n    \"board_id\": \"fdcd8a20-5391-11e9-be1a-133465a62776\",\n    \"id\": \"478aa860-5396-11e9-be1a-133465a62776\",\n    \"updatedAt\": \"2019-03-31T09:24:38.222Z\",\n    \"createdAt\": \"2019-03-31T09:24:38.222Z\"\n}"
+								},
+								"url": {
+									"raw": "{{todo_domain}}/api/v1/todo/board/fdcd8a20-5391-11e9-be1a-133465a62776/item/478aa860-5396-11e9-be1a-133465a62776/sync",
+									"host": [
+										"{{todo_domain}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"todo",
+										"board",
+										"fdcd8a20-5391-11e9-be1a-133465a62776",
+										"item",
+										"478aa860-5396-11e9-be1a-133465a62776",
+										"sync"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DeleteItem",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "da402a0c-4327-4cdf-b6b7-336f7a718466",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json",
+										"disabled": true
+									},
+									{
+										"key": "Frontend-Token",
+										"type": "text",
+										"value": "{{todo_jwt_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{todo_domain}}/api/v1/todo/board/fdcd8a20-5391-11e9-be1a-133465a62776/item/9f678700-5397-11e9-be1a-133465a62776/delete",
+									"host": [
+										"{{todo_domain}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"todo",
+										"board",
+										"fdcd8a20-5391-11e9-be1a-133465a62776",
+										"item",
+										"9f678700-5397-11e9-be1a-133465a62776",
+										"delete"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "CreateBoard",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "da402a0c-4327-4cdf-b6b7-336f7a718466",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Frontend-Token",
+								"type": "text",
+								"value": "{{todo_jwt_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"Hello there!\"\n}"
+						},
+						"url": {
+							"raw": "{{todo_domain}}/api/v1/todo/board/fdcd8a20-5391-11e9-be1a-133465a62776/create",
+							"host": [
+								"{{todo_domain}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"todo",
+								"board",
+								"fdcd8a20-5391-11e9-be1a-133465a62776",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AddUserToBoard",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "da402a0c-4327-4cdf-b6b7-336f7a718466",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Frontend-Token",
+								"type": "text",
+								"value": "{{todo_jwt_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"userId\": 6\n}"
+						},
+						"url": {
+							"raw": "{{todo_domain}}/api/v1/todo/board/fdcd8a20-5391-11e9-be1a-133465a62776/addUser",
+							"host": [
+								"{{todo_domain}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"todo",
+								"board",
+								"fdcd8a20-5391-11e9-be1a-133465a62776",
+								"addUser"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "RemoveUserFromBoard",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "da402a0c-4327-4cdf-b6b7-336f7a718466",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Frontend-Token",
+								"type": "text",
+								"value": "{{todo_jwt_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"userId\": 6\n}"
+						},
+						"url": {
+							"raw": "{{todo_domain}}/api/v1/todo/board/fdcd8a20-5391-11e9-be1a-133465a62776/removeUser",
+							"host": [
+								"{{todo_domain}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"todo",
+								"board",
+								"fdcd8a20-5391-11e9-be1a-133465a62776",
+								"removeUser"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SyncBoard",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "da402a0c-4327-4cdf-b6b7-336f7a718466",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Frontend-Token",
+								"type": "text",
+								"value": "{{todo_jwt_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"Sup there!\"\n}"
+						},
+						"url": {
+							"raw": "{{todo_domain}}/api/v1/todo/board/bde02880-5389-11e9-b620-37658e3f335d/sync",
+							"host": [
+								"{{todo_domain}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"todo",
+								"board",
+								"bde02880-5389-11e9-b620-37658e3f335d",
+								"sync"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteBoard",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "da402a0c-4327-4cdf-b6b7-336f7a718466",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json",
+								"disabled": true
+							},
+							{
+								"key": "Frontend-Token",
+								"type": "text",
+								"value": "{{todo_jwt_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{todo_domain}}/api/v1/todo/board/fdcd8a20-5391-11e9-be1a-133465a62776/delete",
+							"host": [
+								"{{todo_domain}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"todo",
+								"board",
+								"fdcd8a20-5391-11e9-be1a-133465a62776",
+								"delete"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetBoard",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "da402a0c-4327-4cdf-b6b7-336f7a718466",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Frontend-Token",
+								"type": "text",
+								"value": "{{todo_jwt_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"Hello there!\"\n}"
+						},
+						"url": {
+							"raw": "{{todo_domain}}/api/v1/todo/board/fdcd8a20-5391-11e9-be1a-133465a62776/get",
+							"host": [
+								"{{todo_domain}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"todo",
+								"board",
+								"fdcd8a20-5391-11e9-be1a-133465a62776",
+								"get"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetBoards",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "da402a0c-4327-4cdf-b6b7-336f7a718466",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Frontend-Token",
+								"type": "text",
+								"value": "{{todo_jwt_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"Hello there!\"\n}"
+						},
+						"url": {
+							"raw": "{{todo_domain}}/api/v1/todo/board/get",
+							"host": [
+								"{{todo_domain}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"todo",
+								"board",
+								"get"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "550a1d79-1dcf-403f-bb52-e177ae11b5ac",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "c46ad040-0e0e-485a-b1c1-b2e3e6490fb2",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "69a56f51-b227-41fb-988b-ac3040d8046b",
+			"key": "todo_domain",
+			"value": "http://localhost:3000",
+			"type": "string"
+		},
+		{
+			"id": "0cbbfd69-026b-4ff2-8560-67cd43f2b614",
+			"key": "todo_jwt_token",
+			"value": "",
+			"type": "string"
+		}
+	]
+}

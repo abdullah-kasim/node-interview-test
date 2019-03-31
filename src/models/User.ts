@@ -1,19 +1,31 @@
-import {Column, HasMany, Model, Table} from "sequelize-typescript";
-import {Device} from "./Device";
-
+import {
+  BelongsToMany,
+  Column,
+  HasMany,
+  Model,
+  Table
+} from 'sequelize-typescript';
+import { Device } from './Device';
+import { BoardUser } from './BoardUser';
+import { Board } from './Board';
 
 @Table
 export class User extends Model<User> {
+  @Column
+  nickname: string;
 
   @Column
-  nickname: string
+  email: string;
 
   @Column
-  email: string
+  password: string;
 
   @Column
-  password: string
+  is_firebase_account: boolean;
 
   @HasMany(() => Device)
-  devices: Device[]
+  devices: Device[];
+
+  @BelongsToMany(() => Board, () => BoardUser)
+  boards: Board[];
 }

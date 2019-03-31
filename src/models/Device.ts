@@ -29,10 +29,8 @@ export class Device extends Model<Device> {
   @Column
   type: string | DeviceType;
 
-  // one device, one account i hope.
-  @Unique
   @Column
-  firebase_token: string;
+  firebase_cloud_token: string;
 
   @Unique
   @Column

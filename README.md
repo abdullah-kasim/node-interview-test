@@ -13,37 +13,13 @@
 ## Table of Contents
 
 * [Install](#install)
-* [Usage](#usage)
 * [Contributors](#contributors)
 * [License](#license)
 
 
 ## Install
 
-[npm][]:
-
-```sh
-npm install node-interview-test
-```
-
-[yarn][]:
-
-```sh
-yarn add node-interview-test
-```
-
-
-## Usage
-
-```js
-const NodeInterviewTest = require('node-interview-test');
-
-const nodeInterviewTest = new NodeInterviewTest();
-
-console.log(nodeInterviewTest.renderName());
-// script
-```
-
+Head to `docs/README.md`
 
 ## Contributors
 
@@ -54,7 +30,7 @@ console.log(nodeInterviewTest.renderName());
 
 ## License
 
-[GPL3.0](LICENSE) © [Abdullah bin Kasim](https://github.com/abdullah-kasim)
+[AGPL3.0-or-later](LICENSE) © [Abdullah bin Kasim](https://github.com/abdullah-kasim)
 
 
 ## 

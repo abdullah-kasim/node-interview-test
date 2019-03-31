@@ -32,6 +32,7 @@
     "dotenv": "^7.0.0",
     "express-jwt": "^5.3.1",
     "fastify": "^2.1.0",
+    "fastify-cors": "^2.1.2",
     "firebase-admin": "^7.1.1",
     "joi": "^14.3.1",
     "jsonwebtoken": "^8.5.1",
@@ -44,24 +45,30 @@
     "reflect-metadata": "^0.1.13",
     "sequelize": "^5.1.0",
     "sequelize-typescript": "^1.0.0-alpha.9",
-    "serialize-javascript": "^1.6.1"
+    "serialize-javascript": "^1.6.1",
+    "uuid": "^3.3.2"
   },
   "devDependencies": {
     "@commitlint/cli": "latest",
     "@commitlint/config-conventional": "latest",
     "@types/bcrypt": "^3.0.0",
+    "@types/bluebird": "^3.5.26",
     "@types/cors": "^2.8.4",
     "@types/dotenv": "^6.1.0",
     "@types/express-jwt": "^0.0.42",
+    "@types/fastify-cors": "^2.1.0",
     "@types/joi": "^14.3.2",
     "@types/jsonwebtoken": "^8.3.2",
     "@types/knex": "^0.16.1",
     "@types/lodash": "^4.14.123",
     "@types/moment": "^2.13.0",
+    "@types/node": "^11.12.2",
     "@types/nodemailer": "^4.6.7",
     "@types/sequelize": "^4.27.44",
     "@types/serialize-javascript": "^1.5.0",
     "@types/sinon": "^7.0.10",
+    "@types/uuid": "^3.4.4",
+    "@types/validator": "^10.11.0",
     "@typescript-eslint/eslint-plugin": "^1.5.0",
     "@typescript-eslint/parser": "^1.5.0",
     "ava": "latest",
@@ -109,7 +116,7 @@
     "lass",
     "node-interview-test"
   ],
-  "license": "GPL3.0",
+  "license": "AGPL-3.0-or-later",
   "lint-staged": {
     "linters": {
       "*.js": [
@@ -120,10 +127,6 @@
       "*.ts": [
         "xo --fix",
         "prettier --write",
-        "git add"
-      ],
-      "*.md": [
-        "remark . -qfo",
         "git add"
       ],
       "package.json": [
@@ -143,11 +146,6 @@
       "html",
       "text"
     ]
-  },
-  "prettier": {
-    "singleQuote": true,
-    "bracketSpacing": true,
-    "trailingComma": "none"
   },
   "private": true,
   "remarkConfig": {
