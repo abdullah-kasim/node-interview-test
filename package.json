@@ -152,6 +152,7 @@
       "coverage/**/*",
       "pm2/**/*",
       "src/migrations/**/*",
+      "src/models/**/*",
       "src/seeders/**/*"
     ],
     "all": true,
