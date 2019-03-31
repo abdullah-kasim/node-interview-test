@@ -24,6 +24,7 @@
     "@typescript-eslint/semi": "off",
     "@typescript-eslint/explicit-function-return-type": "off",
     "ava/no-ignored-test-files": "off",
+    "ava/no-async-fn-without-await": "off",
     "import/no-unresolved": "off",
     "import/no-unassigned-import": "off",
     "prefer-object-spread": "off",
