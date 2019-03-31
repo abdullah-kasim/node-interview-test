@@ -129,10 +129,6 @@
         "prettier --write",
         "git add"
       ],
-      "*.md": [
-        "remark . -qfo",
-        "git add"
-      ],
       "package.json": [
         "fixpack",
         "git add"
