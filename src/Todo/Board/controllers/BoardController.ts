@@ -19,7 +19,7 @@ export class BoardController {
     const schema = getJoi()
       .object()
       .keys({
-        boardId: getJoi()
+        id: getJoi()
           .string()
           .uuid()
           .required(),
@@ -30,7 +30,7 @@ export class BoardController {
     const validation = schema.validate(
       {
         ...request.body,
-        boardId: request.params.boardId
+        id: request.params.boardId
       },
       {
         abortEarly: false
@@ -58,7 +58,7 @@ export class BoardController {
     return ResponseHelper.create(request, reply, board);
   };
 
-  static getBoards: DefaultRequestHandler<any, BoardCommonParam> = (
+  static getBoards: DefaultRequestHandler<any, BoardCommonParam> = async (
     request,
     reply
   ) => {
@@ -69,7 +69,7 @@ export class BoardController {
     return ResponseHelper.create(request, reply, boards);
   };
 
-  static getBoard: DefaultRequestHandler<any, BoardCommonParam> = (
+  static getBoard: DefaultRequestHandler<any, BoardCommonParam> = async (
     request,
     reply
   ) => {
@@ -77,7 +77,7 @@ export class BoardController {
     return ResponseHelper.create(request, reply, board);
   };
 
-  static syncBoard: DefaultRequestHandler<any, BoardCommonParam> = (
+  static syncBoard: DefaultRequestHandler<any, BoardCommonParam> = async (
     request,
     reply
   ) => {
@@ -148,10 +148,10 @@ export class BoardController {
     return ResponseHelper.create(request, reply, board);
   };
 
-  static removeUserFromBoard: DefaultRequestHandler<any, BoardCommonParam> = (
-    request,
-    reply
-  ) => {
+  static removeUserFromBoard: DefaultRequestHandler<
+    any,
+    BoardCommonParam
+  > = async (request, reply) => {
     const validation = BoardController.validateAction(request, reply);
     if (validation !== true) {
       return validation;

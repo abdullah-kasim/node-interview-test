@@ -13,7 +13,8 @@ export class ItemMiddleware {
     const user = await AuthService.getUserFromRequest(request);
     const itemIsEditable = await ItemService.validateItemEditable(
       user,
-      request.body.id
+      request.params.itemId,
+      request.params.boardId
     );
     if (!itemIsEditable) {
       throw new ItemNotEditableByUser();

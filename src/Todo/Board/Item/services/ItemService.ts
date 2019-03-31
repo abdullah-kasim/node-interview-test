@@ -3,7 +3,11 @@ import { User } from '../../../../models/User';
 import { Board } from '../../../../models/Board';
 
 export class ItemService {
-  static validateItemEditable = async (user: User, itemId: string) => {
+  static validateItemEditable = async (
+    user: User,
+    itemId: string,
+    boardId: string
+  ) => {
     const itemEditableByUser = await Item.findOne({
       include: [
         {
@@ -13,9 +17,13 @@ export class ItemService {
               model: User,
               where: {
                 id: user.id
-              }
+              },
+              required: true
             }
           ],
+          where: {
+            id: boardId
+          },
           required: true
         }
       ],
@@ -31,22 +39,22 @@ export class ItemService {
    * @param item
    */
   static cleanItem = (item: Partial<Item>) => {
-    const { board_id, ...otherItemParams } = item;
+    const { board_id, createdAt, updatedAt, ...otherItemParams } = item;
     return otherItemParams;
   };
 
   static createItem = async (item: Partial<Item>) => {
-    await Item.create(item);
+    await Item.create(ItemService.cleanItem(item));
     return await Item.findByPk(item.id);
   };
 
   static syncItem = async (item: Partial<Item>) => {
-    await Item.upsert(item);
+    await Item.upsert(ItemService.cleanItem(item));
     return await Item.findByPk(item.id);
   };
 
-  static deleteItem = async (id: string) => {
-    const item = await Item.findByPk(id);
+  static deleteItem = async (itemId: string) => {
+    const item = await Item.findByPk(itemId);
     if (item) {
       await item.destroy();
     }
@@ -59,5 +67,9 @@ export class ItemService {
         board_id: boardId
       }
     });
+  };
+
+  static getItem = async (itemId: string) => {
+    return await Item.findByPk(itemId);
   };
 }
