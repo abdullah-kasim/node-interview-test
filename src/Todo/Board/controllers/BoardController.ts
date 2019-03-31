@@ -5,7 +5,6 @@ import { ResponseHelper } from '../../../helpers/ResponseHelper';
 import { BoardService } from '../services/BoardService';
 import { AuthService } from '../../../Auth/services/AuthService';
 import { BoardRepository } from '../repositories/BoardRepository';
-import { UserRepository } from '../../../repositories/UserRepository';
 import { User } from '../../../models/User';
 
 interface BoardCommonParam {
@@ -100,7 +99,7 @@ export class BoardController {
    * @param request
    * @param reply
    */
-  static removeBoard: DefaultRequestHandler<any, BoardCommonParam> = async (
+  static deleteBoard: DefaultRequestHandler<any, BoardCommonParam> = async (
     request,
     reply
   ) => {
