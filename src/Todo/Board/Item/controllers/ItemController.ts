@@ -29,7 +29,8 @@ export class ItemController {
     const validation = schema.validate(
       {
         ...request.body,
-        id: request.params.itemId
+        id: request.params.itemId,
+        board_id: request.params.boardId
       },
       { abortEarly: false, allowUnknown: true }
     )
