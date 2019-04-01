@@ -1,8 +1,8 @@
-import { Op } from 'sequelize';
-import * as admin from 'firebase-admin';
-import moment from 'moment';
-import { Device, DeviceType } from '../models/Device';
-import { User } from '../models/User';
+import { Op } from "sequelize"
+import * as admin from "firebase-admin"
+import moment from "moment"
+import { Device, DeviceType } from "../models/Device"
+import { User } from "../models/User"
 
 export class DeviceRepository {
   static addDeviceToUser = async (
@@ -14,36 +14,41 @@ export class DeviceRepository {
   ) => {
     // first, delete all existing rows with the particular device id and token.
     // hopefully this is not a security issue, as getting the device id and firebase token is the device's issue.
-    await Device.destroy({
-      where: {
-        user_id: user.id,
-        [Op.or]: [
-          {
-            device_id: deviceId
-          },
+    const firebaseCloudTokenWhere = firebaseCloudToken
+      ? [
           {
             firebase_cloud_token: firebaseCloudToken
           }
         ]
+      : []
+
+    await Device.destroy({
+      where: {
+        [Op.or]: [
+          {
+            device_id: deviceId
+          },
+          ...firebaseCloudTokenWhere
+        ]
       }
-    });
-    const device = new Device();
-    device.user_id = user.id;
-    device.type = type;
-    device.device_id = deviceId;
-    device.firebase_cloud_token = firebaseCloudToken;
-    device.refresh_token = refreshToken;
+    })
+    const device = new Device()
+    device.user_id = user.id
+    device.type = type
+    device.device_id = deviceId
+    device.firebase_cloud_token = firebaseCloudToken
+    device.refresh_token = refreshToken
     // expire in 30 days? Got it!
-    device.expire_at = DeviceRepository.getDefaultDeviceExpireAt();
-    await device.save();
-    return device;
-  };
+    device.expire_at = DeviceRepository.getDefaultDeviceExpireAt()
+    const newDevice = await device.save()
+    return await newDevice
+  }
 
   static getDefaultDeviceExpireAt = () => {
     return moment()
-      .add(30, 'days')
-      .toDate();
-  };
+      .add(30, "days")
+      .toDate()
+  }
 
   static getDeviceByRefreshToken = async refreshToken => {
     return await Device.findOne({
@@ -55,6 +60,6 @@ export class DeviceRepository {
       where: {
         refresh_token: refreshToken
       }
-    });
-  };
+    })
+  }
 }
