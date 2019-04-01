@@ -4,10 +4,12 @@ Since this is just a demo app, I'll include the keys with this repo here rather 
 
 Note: Tested only on linux
 
+Note2: Moved the serviceAccountKey into an encrypted zip file due to google compliance e-mail
+
 1. Prerequisites: `yarn`, `node v10`, `docker`
 2. All instructions should be done relative to the project root
 3. For starters, go to the project dir and copy `.env.example` to `.env`
-4. Copy the `serviceAccountKey.json` in this folder to `<project>/src/settings/credentials/`
+4. Extract the `serviceAccountKey.7z` in this folder to `<project>/src/settings/credentials/` . The password is `aii3kjo338xihm7d`
 5. Make sure you have node v10 and the latest yarn installed.
 6. Run `yarn` to install the dependencies
 7. Run `./docker/postgres-current/run.sh` to run a postgres instance (or roll your own!)
